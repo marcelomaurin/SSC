@@ -6,34 +6,48 @@ interface
 
 uses
   Classes, SysUtils, process, FileUtil, Forms, Controls, Graphics, Dialogs,
-  StdCtrls, Buttons, ComCtrls, ExtCtrls, Menus, SdpoSerial, DataPortIP, SynMemo,
-  SynEdit, hexlib, types, finds, SynHighlighterAny, SynHighlighterPo,
-  SynHighlighterPas, SynHighlighterCpp, LCLType;
+  StdCtrls, Buttons, ComCtrls, ExtCtrls, Menus, lNetComponents, SdpoSerial,
+  SynMemo, SynEdit, hexlib, types, lNet, synaser;
+
+const
+  MAXBLOCOLINHA = 40;
+  BLOCOSTART = 'INICIOU GATEWAY';
 
 type
 
   { TForm1 }
 
   TForm1 = class(TForm)
-    BitBtn1: TBitBtn;
-    BitBtn2: TBitBtn;
-    BitBtn3: TBitBtn;
-    BitBtn4: TBitBtn;
+    btConnect: TBitBtn;
+    btDisconnect: TBitBtn;
     btEnviar: TButton;
     btEnter: TButton;
-    cbDatabit: TComboBox;
+    Button1: TButton;
+    btFeedbackserial: TButton;
+    Button2: TButton;
+    Button3: TButton;
+    btBridge: TButton;
     cbBaudrate: TComboBox;
+    cbDatabit: TComboBox;
     cbParidade: TComboBox;
     cbStopbit: TComboBox;
-    ckRepeaterSerial: TCheckBox;
-    ckConnection: TCheckBox;
-    DataPortTCP1: TDataPortTCP;
+    cbTipo1: TPageControl;
+    ckEsperaCon: TCheckBox;
+    ckBlocado: TCheckBox;
+    ckEscuta: TCheckBox;
+    ckTimmer: TCheckBox;
     edEnviar: TEdit;
-    edPortSocket: TEdit;
-    edURL: TEdit;
+    edHexBloc: TEdit;
+    edHost: TEdit;
+    edDelay: TEdit;
     edPort: TEdit;
-    edPort1: TEdit;
-    FindDialog1: TFindDialog;
+    edSource: TEdit;
+    edStart: TEdit;
+    edTCPPORT: TEdit;
+    edTimmer: TEdit;
+    GroupBox1: TGroupBox;
+    GroupBox2: TGroupBox;
+    GroupBox3: TGroupBox;
     Label1: TLabel;
     Label10: TLabel;
     Label11: TLabel;
@@ -41,7 +55,14 @@ type
     Label13: TLabel;
     Label14: TLabel;
     Label15: TLabel;
+    Label16: TLabel;
     Label17: TLabel;
+    Label18: TLabel;
+    Label19: TLabel;
+    Label20: TLabel;
+    Label21: TLabel;
+    Label22: TLabel;
+    Label23: TLabel;
     Label3: TLabel;
     Label2: TLabel;
     Label4: TLabel;
@@ -50,76 +71,108 @@ type
     Label7: TLabel;
     Label8: TLabel;
     Label9: TLabel;
-    lstFind: TListBox;
+    LTCPComponent1: TLTCPComponent;
     MainMenu1: TMainMenu;
     Memo1: TSynEdit;
     Memo2: TSynEdit;
+    Memo3: TSynEdit;
+    Memo4: TSynEdit;
+    Memo5: TSynEdit;
+    Memo6: TSynEdit;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
-    MenuItem4: TMenuItem;
-    MenuItem5: TMenuItem;
     MenuItem6: TMenuItem;
+    MenuItem7: TMenuItem;
+    MenuItem8: TMenuItem;
+    MenuItem9: TMenuItem;
     OpenDialog1: TOpenDialog;
     PageControl1: TPageControl;
     cbTipo: TPageControl;
-    popFind: TPopupMenu;
-    Process1: TProcess;
     SaveDialog1: TSaveDialog;
     SaveDialog2: TSaveDialog;
     SdpoSerial1: TSdpoSerial;
-    SdpoSerial2: TSdpoSerial;
+    synSource: TSynEdit;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
+    tbProgrammer: TTabSheet;
+    TabSheet4: TTabSheet;
+    TabSheet5: TTabSheet;
+    TabSheet6: TTabSheet;
+    TabSheet7: TTabSheet;
+    tbSocket: TTabSheet;
+    tmConecta: TTimer;
+    ToggleBox1: TToggleBox;
+    tsSource: TTabSheet;
     tbSerial: TTabSheet;
     tbSobre: TTabSheet;
     tbConfig: TTabSheet;
-    ToggleBox1: TToggleBox;
-    procedure BitBtn1Click(Sender: TObject);
-    procedure BitBtn2Click(Sender: TObject);
-    procedure BitBtn3Click(Sender: TObject);
-    procedure BitBtn4Click(Sender: TObject);
+    Timer1: TTimer;
+    procedure btBridgeClick(Sender: TObject);
+    procedure btConnectClick(Sender: TObject);
+    procedure btDisconnectClick(Sender: TObject);
     procedure btDevicesClick(Sender: TObject);
     procedure btEnterClick(Sender: TObject);
+    procedure btEnterKeyPress(Sender: TObject; var Key: char);
     procedure btEnviarClick(Sender: TObject);
+    procedure btFeedbbackSChange(Sender: TObject);
     procedure btImprimirClick(Sender: TObject);
     procedure btZeraClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure btFeedbackserialClick(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
     procedure cbTipoChange(Sender: TObject);
-    procedure DataPortTCP1Close(Sender: TObject);
-    procedure DataPortTCP1DataAppear(Sender: TObject);
-    procedure DataPortTCP1Open(Sender: TObject);
+    procedure ckTimmerChange(Sender: TObject);
+    procedure edEnviarKeyPress(Sender: TObject; var Key: char);
     procedure edPortChange(Sender: TObject);
-    procedure FindDialog1Find(Sender: TObject);
     procedure FormCreate(Sender: TObject);
-    procedure Label11Click(Sender: TObject);
-    procedure Label12Click(Sender: TObject);
-    procedure Label14Click(Sender: TObject);
-    procedure lstFindClick(Sender: TObject);
+    procedure Label8Click(Sender: TObject);
+    procedure LTCPComponent1Accept(aSocket: TLSocket);
+    procedure LTCPComponent1CanSend(aSocket: TLSocket);
+    procedure LTCPComponent1Connect(aSocket: TLSocket);
+    procedure LTCPComponent1Disconnect(aSocket: TLSocket);
+    procedure LTCPComponent1Error(const msg: string; aSocket: TLSocket);
+    procedure LTCPComponent1Receive(aSocket: TLSocket);
     procedure Memo1Change(Sender: TObject);
     procedure MenuItem2Click(Sender: TObject);
     procedure MenuItem3Click(Sender: TObject);
     procedure MenuItem5Click(Sender: TObject);
-    procedure MenuItem6Click(Sender: TObject);
+    procedure MenuItem8Click(Sender: TObject);
+    procedure MenuItem9Click(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
+    procedure SdpoSerial1BlockSerialStatus(Sender: TObject;
+      Reason: THookSerialReason; const Value: string);
     procedure SdpoSerial1RxData(Sender: TObject);
-    procedure SdpoSerial2RxData(Sender: TObject);
     procedure tbConfigContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
     procedure tbSerialContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
     procedure tbSobreContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
+    procedure Timer1Timer(Sender: TObject);
     procedure timerBalancaTimer(Sender: TObject);
+    procedure tmConectaStartTimer(Sender: TObject);
+    procedure tmConectaTimer(Sender: TObject);
     procedure ToggleBox1Change(Sender: TObject);
+    procedure RegistraChar(tipo: string; Info : string);
+    procedure RegistraTCP(tipo: string; Info : string);
   private
     { private declarations }
     {$IFDEF WINDOWS}
-    FPos : integer;
-    procedure Pesquisar(Sender: TObject);
-    procedure setSelLength(var textComponent:TSynEdit; newValue:integer);
+    blocolinha : integer;
+    blocolinhaTCP : integer;
+    bufferSerial : string;
+    flgEstabeleceu :boolean;
+
+
+    //FNet: TLConnection;
+    FIsServer: Boolean;
+    procedure ConectaSerial();
     procedure ChamaWindows();
     procedure AudioWindows();
+    procedure  AtivaTCP();
     {$ENDIF}
     {$IFDEF LINUX}
     procedure ChamaLinux();
@@ -128,10 +181,13 @@ type
     {$ENDIF}
     function strtohex(info : string) : string;
     function hextostr(info: string): string;
+    procedure AnalisaBloco();
+    procedure Echooa();
   public
     { public declarations }
     Arquivo : String;
-    strFind : string;
+    procedure ProcessSource();
+    function Analise(info : string): string;
   end; 
 
 var
@@ -143,42 +199,133 @@ implementation
 
 { TForm1 }
 
-procedure TForm1.BitBtn1Click(Sender: TObject);
+//Analisa a linha em busca de comandos - futuro
+function TForm1.Analise(info : string): string;
 begin
-  SdpoSerial1.Active:=false;
+  result := info;
+end;
+
+//Process line in line to send
+procedure TForm1.ProcessSource();
+var
+  line : integer;
+  info : string;
+begin
+  for line := 0 to synSource.Lines.Count-1 do
+  begin
+       info := Analise(synSource.Lines[line]);
+       SdpoSerial1.WriteData(info);
+  end;
+
+end;
+
+procedure  TForm1.AtivaTCP();
+begin
+    if   LTCPComponent1.Connected then
+    begin
+        LTCPComponent1.Disconnect(true);
+        Application.ProcessMessages;
+        sleep(1000); //Aguarda desconectar
+    end;
+
+   // SSL.SSLActive:= false;
+    //LTCPComponent1.SocketNet := LAF_INET;
+    //LTCPComponent1.Port:= strtoint(edTCPPORT.Text);
+    if LTCPComponent1.Connect(edHost.text,strtoint(edTCPPORT.Text)) then
+    begin
+         Application.ProcessMessages;
+         //Deu certo
+         RegistraChar('CON','Registrou TCP'+#13+#10);
+
+         if (ckEsperaCon.Checked) then
+         begin
+             flgEstabeleceu := false;
+             RegistraChar('CON','Aguardando estabelecer conexao'+#13+#10);
+             sleep(1000);
+             //Echooa();
+             Application.ProcessMessages;
+             tmConecta.Enabled:= true; //Ativa thread de aguarda echo
+         end
+         else
+         begin
+             RegistraTCP('WAIT' , 'ESTABELECEU CONEXAO!'+#13+#10);
+         end;
+    end;
+
+end;
+
+procedure TForm1.ConectaSerial();
+begin
+  SdpoSerial1.close;
   SdpoSerial1.Device:= edPort.Text;
   SdpoSerial1.DataBits:=  TDataBits(cbDatabit.ItemIndex);
   SdpoSerial1.BaudRate:= TBaudRate( cbBaudrate.ItemIndex);
   SdpoSerial1.Parity:= TParity(cbParidade.ItemIndex);
   SdpoSerial1.StopBits:= TStopBits(cbStopbit.ItemIndex);
-
-  SdpoSerial1.Active:=true;
+  //SdpoSerial1.Open;
+  SdpoSerial1.Active:= true;
 end;
 
-procedure TForm1.BitBtn2Click(Sender: TObject);
+procedure TForm1.btConnectClick(Sender: TObject);
+begin
+   ConectaSerial();
+end;
+
+procedure TForm1.btBridgeClick(Sender: TObject);
+begin
+ Cursor:= crHourGlass;
+ tmConecta.Enabled:= false; //Ativa thread de aguarda echo
+ ckEscuta.Checked:= false;
+ ckBlocado.Checked:= false;
+ //Inicia conexao com Rede
+ if   LTCPComponent1.Connected then
+ begin
+         LTCPComponent1.Disconnect(true);
+         Application.ProcessMessages;
+
+ end;
+ Application.ProcessMessages;
+ ConectaSerial();
+ Application.ProcessMessages;
+ sleep(strtoint(edDelay.text) *1000);
+ Application.ProcessMessages;
+ if LTCPComponent1.Connect(edHost.text,strtoint(edTCPPORT.Text)) then
+  begin
+        Application.ProcessMessages;
+        //Deu certo
+        RegistraChar('CON','Registrou TCP'+#13+#10);
+
+        if(ckEsperaCon.Checked) then
+        begin
+            flgEstabeleceu := true;
+            Echooa();
+            Application.ProcessMessages;
+            tmConecta.Enabled:= true; //Ativa thread de aguarda echo
+        end
+        else
+        begin
+
+          AtivaTCP();
+          sleep(1000); //Aguarda desconectar
+          Application.ProcessMessages;
+          ECHOOA;
+
+        end;
+  end;
+
+  ckEscuta.Checked:= true;
+  ckBlocado.Checked:= false;
+  Cursor:=crDefault;
+end;
+
+procedure TForm1.btDisconnectClick(Sender: TObject);
 begin
   SdpoSerial1.Close;
-  if DataPortTCP1.Active then
+  if LTCPComponent1.Connected then
   begin
-     DataPortTCP1.Close();
+    LTCPComponent1.Disconnect(true);
   end;
-end;
-
-procedure TForm1.BitBtn3Click(Sender: TObject);
-begin
-    SdpoSerial2.Close;
-end;
-
-procedure TForm1.BitBtn4Click(Sender: TObject);
-begin
-  SdpoSerial2.Active:=false;
-  SdpoSerial2.Device:= edPort1.Text;
-  SdpoSerial2.DataBits:=  TDataBits(cbDatabit.ItemIndex);
-  SdpoSerial2.BaudRate:= TBaudRate( cbBaudrate.ItemIndex);
-  SdpoSerial2.Parity:= TParity(cbParidade.ItemIndex);
-  SdpoSerial2.StopBits:= TStopBits(cbStopbit.ItemIndex);
-
-  SdpoSerial2.Active:=true;
+  //LTCPComponent1.Active:= false;
 end;
 
 
@@ -224,21 +371,30 @@ begin
     info := edEnviar.Text;
     if SdpoSerial1.Active then
   begin
-
+     info := info + #13+#10;
      if (cbTipo.ActivePage=TabSheet1) then
      begin
-          SdpoSerial1.WriteData(info + #13+#10);
-          Memo1.Lines.Append('Send'+datetimetostr(now)+':'+Info);
-          Memo2.Lines.Append('Send'+datetimetostr(now)+':'+strtohex(Info));
-     end
-     else
+          SdpoSerial1.WriteData(info);
+          RegistraChar('Send',Info);
+     end;
+     if (cbTipo.ActivePage=TabSheet2) then
      begin
-           SdpoSerial1.WriteData(hextostr(info) + #13+#10);
-           Memo1.Lines.Append('Send'+datetimetostr(now)+':'+hextostr(Info));
-           Memo2.Lines.Append('Send'+datetimetostr(now)+':'+Info);
+           SdpoSerial1.WriteData(hextostr(info) );
+           RegistraChar('Send',hextostr(Info));
+     end;
+     if (cbTipo.ActivePage=TabSheet4) then
+     begin
+          SdpoSerial1.WriteData(info);
+          RegistraChar('Send',Info);
      end;
 
+
   end;
+end;
+
+procedure TForm1.btEnterKeyPress(Sender: TObject; var Key: char);
+begin
+
 end;
 
 procedure TForm1.btEnviarClick(Sender: TObject);
@@ -246,18 +402,35 @@ var
    info : string;
 begin
   info := edEnviar.Text;
-  Memo1.Lines.Append('Send'+datetimetostr(now)+':'+Info);
   if (cbTipo.ActivePage=TabSheet1) then
   begin
      SdpoSerial1.WriteData(info);
-     Memo1.Lines.Append('Send'+datetimetostr(now)+':'+Info);
-     Memo2.Lines.Append('Send'+datetimetostr(now)+':'+strtohex(Info));
+     RegistraChar('Send',Info);
+  end;
+  if (cbTipo.ActivePage=TabSheet2) then
+  begin
+     SdpoSerial1.WriteData(hextostr(info));
+     RegistraChar('Send',hextostr(Info));
+  end;
+  if (cbTipo.ActivePage=TabSheet4) then
+       begin
+            SdpoSerial1.WriteData(info);
+            RegistraChar('Send',Info);
+       end;
+end;
+
+procedure TForm1.btFeedbbackSChange(Sender: TObject);
+var
+   info : string;
+begin
+  info := 'TESTE Serial'+#13;
+  if (SdpoSerial1.Active) then
+  begin
+     SdpoSerial1.WriteData(info);
   end
   else
   begin
-     SdpoSerial1.WriteData(hextostr(info));
-     Memo1.Lines.Append('Send'+datetimetostr(now)+':'+hextostr(Info));
-     Memo2.Lines.Append('Send'+datetimetostr(now)+':'+Info);
+     ShowMessage('Disconnected!');
   end;
 end;
 
@@ -273,6 +446,57 @@ begin
   begin
        SdpoSerial1.WriteData('Z');
   end;
+end;
+
+procedure TForm1.Echooa();
+var
+   info : string;
+   n : integer;
+begin
+  info := 'ECHOOA'+#13;
+  //if ckEscuta.Checked then
+  begin
+     RegistraChar('SSD' , 'ECHOA');
+     if LTCPComponent1.Connected then
+     begin
+             Application.ProcessMessages;
+             RegistraTCP('SCT' ,Info);
+             n := LTCPComponent1.SendMessage(Info);
+             Application.ProcessMessages;
+             if( n<length(Info) ) then
+             begin
+                //debug("Erro ao tentar enviar sck!");
+                RegistraTCP('ERRO' , 'Erro ao tentar enviar sck!');
+             end;
+     end;
+  end;
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  ECHOOA;
+end;
+
+procedure TForm1.btFeedbackserialClick(Sender: TObject);
+var
+   info : string;
+begin
+  info := 'TESTE Socket'+#13;
+  if SdpoSerial1.Active then
+  begin
+    SdpoSerial1.WriteData(info);
+  end;
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+begin
+  AtivaTCP();
+end;
+
+procedure TForm1.Button3Click(Sender: TObject);
+begin
+  LTCPComponent1.Disconnect(true);
+  tmConecta.Enabled:=false;
 end;
 
 
@@ -317,29 +541,20 @@ begin
   end;
 end;
 
-procedure TForm1.DataPortTCP1Close(Sender: TObject);
+procedure TForm1.ckTimmerChange(Sender: TObject);
 begin
-    Memo1.Lines.Append('Socket:'+datetimetostr(now)+':disconnected');
+  Timer1.Enabled:=false;
+  Timer1.Interval:=strtoint(edTimmer.text);
+
+  Timer1.Enabled:= ckTimmer.Enabled;
 end;
 
-procedure TForm1.DataPortTCP1DataAppear(Sender: TObject);
-var
-   info : string;
+procedure TForm1.edEnviarKeyPress(Sender: TObject; var Key: char);
 begin
-  info := DataPortTCP1.Peek(DataPortTCP1.PeekSize());
-  Memo1.Lines.Append('Socket Rec:'+datetimetostr(now)+':'+info);
-  if (ckRepeaterSerial.Checked) then
+  if (key = #13) then
   begin
-       if (SdpoSerial1.Active) then
-       begin
-          SdpoSerial1.WriteData(info);
-       end;
+       btEnterClick(self);
   end;
-end;
-
-procedure TForm1.DataPortTCP1Open(Sender: TObject);
-begin
-  Memo1.Lines.Append('Socket:'+datetimetostr(now)+':connected');
 end;
 
 procedure TForm1.edPortChange(Sender: TObject);
@@ -347,86 +562,88 @@ begin
 
 end;
 
-procedure TForm1.FindDialog1Find(Sender: TObject);
-begin
-     strFind:= findDialog1.FindText;
-     Pesquisar(Sender);
-end;
-
 procedure TForm1.FormCreate(Sender: TObject);
 begin
     {$IFDEF LINUX}
           edPort.text:='/dev/ttyS0';
-          edPort1.text:='/dev/ttyS0';
 
   {$ENDIF}
   {$IFDEF WINDOWS}
-          edPort.text:='COM1';
-          edPort1.text:='COM2';
+          edPort.text:='COM13';
 
   {$ENDIF}
+  blocolinha := 0; //Inicia bloco de linha
+  blocolinhaTCP := 0; //Inicia bloco de linha
+  FIsServer := False;
+
 
 end;
 
-procedure TForm1.Label11Click(Sender: TObject);
+procedure TForm1.Label8Click(Sender: TObject);
 begin
 
 end;
 
-procedure TForm1.Label12Click(Sender: TObject);
-begin
-
-end;
-
-procedure TForm1.Label14Click(Sender: TObject);
-begin
-
-end;
-
-procedure TForm1.lstFindClick(Sender: TObject);
+procedure TForm1.LTCPComponent1Accept(aSocket: TLSocket);
 var
-   syn : TSynEdit;
-   res : boolean;
-
-   find : TFind;
-
-
+   info : string;
 begin
+  info := 'Aceitou a conexao, IP:'+ aSocket.LocalAddress+#13+#10;
+  RegistraTCP('ACE' , INFO);
+end;
 
-    If lstFind.SelCount > 0 then
-    begin
-        if cbTipo.ActivePage = TabSheet1 then
-        begin
-         syn := Memo1;
-        end
-         else
-        begin
-         syn := Memo2;
-        end;
-
-        find := TFIND(lstFind.items.objects[lstFind.ItemIndex]);
-        //pgMain.ActivePage := find.tb;
-
-        FPOS := find.IPOS;
-
-
-
-        FPos := find.IPos + length(find.strFind);
-        //   Hoved.BringToFront;       {Edit control must have focus in }
-        find.syn.SetFocus;
-        Self.ActiveControl := find.syn;
-        find.syn.SelStart:= find.IPos;  // -1;   mike   {Select the string found by POS}
-        setSelLength(find.syn, find.FLen);     //Memo1.SelLength := FLen;
-        //Found := True;
-        FPos:=FPos+find.FLen-1;   //mike - move just past end of found item
-
-    end;
+procedure TForm1.LTCPComponent1CanSend(aSocket: TLSocket);
+begin
 
 end;
 
-procedure TForm1.setSelLength(var textComponent:TSynEdit; newValue:integer);
+procedure TForm1.LTCPComponent1Connect(aSocket: TLSocket);
+var
+   info : string;
 begin
-textComponent.SelEnd:=textComponent.SelStart+newValue ;
+  info := 'O Cliente Conectou IP:'+ aSocket.LocalAddress+#13+#10;
+  RegistraTCP('CON' , info);
+  info := 'O Servidor Conectou IP:'+ aSocket.PeerAddress+#13+#10;
+  RegistraTCP('CON' , info);
+end;
+
+procedure TForm1.LTCPComponent1Disconnect(aSocket: TLSocket);
+var
+   info : string;
+begin
+  info := 'O Cliente Desconectou IP:'+ aSocket.LocalAddress+#13+#10;
+  RegistraTCP('DES' , info);
+
+end;
+
+procedure TForm1.LTCPComponent1Error(const msg: string; aSocket: TLSocket);
+var
+   info : string;
+begin
+  info := 'Erro:'+ msg;
+  RegistraTCP('ERRO' , 'info');
+end;
+
+procedure TForm1.LTCPComponent1Receive(aSocket: TLSocket);
+var
+   info : string;
+begin
+   aSocket.GetMessage(Info);
+   RegistraTCP('TCR' , info);
+   if (SdpoSerial1.Active) then
+   begin
+      RegistraChar('STX' , info);
+
+      SdpoSerial1.WriteData(info);
+      if ckEsperaCon.Checked then
+      begin
+        if (pos(edStart.text,info)>0) then
+        begin
+           flgEstabeleceu := true;
+        end;
+      end;
+
+   end;
 end;
 
 procedure TForm1.Memo1Change(Sender: TObject);
@@ -450,86 +667,46 @@ end;
 
 procedure TForm1.MenuItem5Click(Sender: TObject);
 begin
-  if (FindDialog1.Execute) then
-  begin
+  ShowMessage('Not yet!');
+end;
 
+procedure TForm1.MenuItem8Click(Sender: TObject);
+begin
+  if (SaveDialog1.Execute) then
+  begin
+     synSource.Lines.SaveToFile(SaveDialog1.FileName);
   end;
 end;
 
-procedure TForm1.MenuItem6Click(Sender: TObject);
+procedure TForm1.MenuItem9Click(Sender: TObject);
 begin
-     lstFind.Visible:=false;
-end;
-
-procedure TForm1.Pesquisar(Sender: TObject);
-Var
-     find : TFind;
-     //FindS: String;
-     Found : boolean;
-     IPos, FLen, SLen: Integer; {Internpos, Lengde søkestreng, lengde memotekst}
-     Res : integer;
-     syn : TSynEdit;
-
-begin
-    IPOS := 0;
-    FPOS := 0;
-    if cbTipo.ActivePage = TabSheet1 then
-    begin
-         syn := Memo1;
-
-    end
-    else
-    begin
-       syn := Memo2;
-    end;
-    //item := TItem(syn.tag);
-
-    {FPos is global}
-    Found:= False;
-    FLen := Length(strFind);
-    SLen := Length(syn.Text);
-    //FindS := findDialog1.FindText;
-    lstFind.Items.clear;
-
-    repeat
-
-       //following 'if' added by mike
-       if frMatchcase in findDialog1.Options then
-          IPos := Pos(strFind, Copy(syn.Text,FPos+1,SLen-FPos))
-       else
-          IPos := Pos(AnsiUpperCase(strFind),AnsiUpperCase( Copy(syn.Text,FPos+1,SLen-FPos)));
-
-       if (IPOS>0) then
-       begin
-         FPos := FPos + IPos;
-         find := TFind.create(syn ,cbTipo.ActivePage , nil, FPOS, strFind);
-
-         lstFind.Items.AddObject('Pos:'+inttostr(FPOS),tobject(find));
-
-       end
-       else
-       begin
-         FPOS := 0;
-         break;
-       end;
-    until (IPOS <=0);
-
-    If lstFind.Count > 0 then begin
-      lstFind.Visible:= true;
-    end
-    Else
-    begin
-      lstFind.Visible:= false;
-      Res := Application.MessageBox('Text was not found!',
-             'Find',  mb_OK + mb_ICONWARNING);
-      FPos := 0;     //mike  nb user might cancel dialog, so setting here is not enough
-    end;             //   - also do it before exec of dialog.
-
+  ToggleBox1Change(self); //Carrega o arquivo
 end;
 
 procedure TForm1.PageControl1Change(Sender: TObject);
 begin
 
+end;
+
+procedure TForm1.SdpoSerial1BlockSerialStatus(Sender: TObject;
+  Reason: THookSerialReason; const Value: string);
+begin
+  case Reason of
+  HR_Connect:
+  begin
+     //btConnect.Enabled:=false;
+     //btDisconnect.Enabled:=true;
+     RegistraChar('SEND' , 'Conectou');
+  end;
+  HR_SerialClose:
+  begin
+     //btConnect.Enabled:=true;
+     //btDisconnect.Enabled:=false;
+
+     RegistraChar('SEND' , 'Desconectou');
+  end;
+
+  end;
 end;
 
 function TForm1.hextostr(info: string): string;
@@ -543,50 +720,224 @@ begin
   result := StringToHex(info);
 end;
 
-procedure TForm1.SdpoSerial1RxData(Sender: TObject);
+
+procedure TForm1.RegistraChar(tipo: string; Info : string);
 var
-  Info : String;
+   linha : string;
+   a : integer;
+   strBloco : string;
 begin
-  Info := SdpoSerial1.ReadData;
-  Memo1.Lines.Append('Rec1'+datetimetostr(now)+':'+Info);
-  Memo2.Lines.Append('Rec1'+datetimetostr(now)+':'+strtohex(Info));
-  if ckConnection.Checked then
+  strBloco := hextostr(edHexBloc.text);
+  if (pos(strBloco,info)>0) then
   begin
-     if (SdpoSerial2.Active) then
-     begin
-        SdpoSerial2.WriteData(Info);
-     end;
+    Memo3.Lines.Append(tipo+timetostr(now)+'->'+Info);
+  end
+  else
+  begin
+    if ((memo3.lines.count-1)>0) then
+    begin
+      linha := memo3.Lines.Strings[memo3.lines.count-1];
+      memo3.Lines.Delete(memo3.lines.count-1);
+      Memo3.Lines.Append(linha+Info);
+    end;
   end;
-  if ckRepeaterSerial.Checked then
+
+  for a:= 0 to Length(Info)-1 do
   begin
-     if (DataPortTCP1.Active) then
-     begin
-        DataPortTCP1.Push(info);
-     end
-     else
-     begin
-        DataPortTCP1.RemoteHost:=edURL.Text;
-        DataPortTCP1.RemotePort:=edPortSocket.text;
-        DataPortTCP1.Open(info);
-     end;
+    if (a = pos(strBloco,info)) then
+    begin
+      blocolinha := 0;
+    end;
+    if (blocolinha >= MAXBLOCOLINHA) then
+    begin
+       blocolinha := 0;
+    end;
+    if (blocolinha =0 ) then
+    begin
+       Memo1.Lines.Append(tipo+timetostr(now)+'->'+Info[a]);
+       Memo2.Lines.Append(tipo+timetostr(now)+'->'+StringToHexMask(Info[a],' '));
+    end
+    else
+    begin
+      Application.ProcessMessages;
+      linha := Memo1.Lines.Strings[Memo1.Lines.Count-1];
+      Memo1.Lines.Delete(Memo1.Lines.Count-1);
+      Memo1.Lines.Append(linha+' '+Info);
+      //Memo1.Lines.AddStrings(info);
+      Application.ProcessMessages;
+
+      linha := Memo2.Lines.Strings[Memo2.Lines.Count-1];
+      Memo2.Lines.Delete(Memo2.Lines.Count-1);
+      Memo2.Lines.Append(linha+' '+StringToHexMask(Info,' '));
+      //Memo2.Lines.AddStrings(info);
+      Application.ProcessMessages;
+    end;
+    inc(blocolinha );
+  end;
+  //blocolinha := 0;
+end;
+
+procedure TForm1.RegistraTCP(tipo: string; Info : string);
+var
+   linha : string;
+   a : integer;
+   strBloco : string;
+   info2 : string;
+begin
+  strBloco := hextostr(edHexBloc.text);
+  if (pos(strBloco,info)>0) then
+  begin
+    Memo6.Lines.Append(tipo+timetostr(now)+'->'+Info);
+  end
+  else
+  begin
+    if ((memo6.lines.count-1)>0) then
+    begin
+      linha := memo6.Lines.Strings[memo6.lines.count-1];
+      memo6.Lines.Delete(memo6.lines.count-1);
+      Memo6.Lines.Append(linha+Info);
+    end;
+  end;
+
+  for a:= 0 to Length(Info)-1 do
+  begin
+    if (a = pos(strBloco,info)) then
+    begin
+      blocolinhaTCP := 0;
+    end;
+    if (blocolinhaTCP >= MAXBLOCOLINHA) then
+    begin
+       blocolinhaTCP := 0;
+    end;
+    if (blocolinhaTCP =0 ) then
+    begin
+       Memo4.Lines.Append(tipo+timetostr(now)+'->'+Info);
+       info2 := StringToHexMask(Info,' ');
+       Memo5.Lines.Append(tipo+timetostr(now)+'->'+info2);
+    end
+    else
+    begin
+      linha := Memo4.Lines.Strings[Memo4.Lines.Count-1];
+      if (linha <> '') then
+      begin
+         Memo4.Lines.Delete(Memo4.Lines.Count-1);
+      end;
+      Memo4.Lines.Append(linha+' '+Info[a]);
+      linha := Memo5.Lines.Strings[Memo5.Lines.Count-1];
+      if (linha <> '') then
+      begin
+           Memo5.Lines.Delete(Memo5.Lines.Count-1);
+      end;
+      info2 := StringToHexMask(Info,' ');
+      Memo5.Lines.Append(linha+' '+info2);
+
+    end;
+    inc(blocolinhaTCP );
+  end;
+  //blocolinha := 0;
+end;
+
+
+procedure TForm1.AnalisaBloco();
+var
+  trabalho : string;
+  n : integer;
+  strBlocado : string;
+begin
+  strBlocado := hextostr(edHexBloc.text);
+  if (pos(strBlocado,bufferSerial)>0) then
+  begin
+       repeat
+         Trabalho := copy(BufferSerial,1,pos(strBlocado,BufferSerial)+(length(strBlocado)-1));
+         if (pos(BLOCOSTART,Trabalho)>0) then
+         begin
+              if ckEscuta.Checked then
+              begin
+                 AtivaTCP;
+              end;
+         end;
+         RegistraChar('SRX',Trabalho);
+         if ckEscuta.Checked then
+         begin
+                if LTCPComponent1.Connected then
+                begin
+                       RegistraTCP('SCT',Trabalho);
+                       n := LTCPComponent1.SendMessage(Trabalho,LTCPComponent1.Iterator);
+                       if( n<length(Trabalho) ) then
+                       begin
+                         //debug("Erro ao tentar enviar sck!");
+                         RegistraTCP('ERR','Erro ao tentar enviar sck!');
+                       end;
+                end;
+         end;
+         bufferSerial :=copy(bufferSerial,(pos(strBlocado,bufferSerial)+length(strBlocado)), Length(bufferSerial));
+       until (BufferSerial = '');
   end;
 
 end;
 
-procedure TForm1.SdpoSerial2RxData(Sender: TObject);
+procedure TForm1.SdpoSerial1RxData(Sender: TObject);
 var
   Info : String;
+  n : integer;
+
 begin
-  Info := SdpoSerial2.ReadData;
-  Memo1.Lines.Append('Rec2'+datetimetostr(now)+':'+Info);
-  Memo2.Lines.Append('Rec2'+datetimetostr(now)+':'+strtohex(Info));
-  if ckConnection.Checked then
+  Info := SdpoSerial1.ReadData;
+  SdpoSerial1.SynSer.Flush;
+
+  if ckBlocado.Checked then
   begin
-     if (SdpoSerial1.Active) then
-     begin
-        SdpoSerial1.WriteData(Info);
-     end;
+    BufferSerial := BufferSerial + Info;
+    AnalisaBloco();
+  end
+  else
+  begin    //Nao blocado
+    RegistraChar('SRX',info);
+    if ckEsperaCon.Checked then
+    begin
+      if ckEscuta.Checked then
+      begin
+        RegistraChar('RX',info);
+        if LTCPComponent1.Connected then
+        begin
+           RegistraTCP('SCT',Info);
+           n := LTCPComponent1.SendMessage(Info,LTCPComponent1.Iterator);
+           if( n<length(Info) ) then
+           begin
+               //debug("Erro ao tentar enviar sck!");
+           end;
+        end;
+      end
+      else
+      begin
+        RegistraChar('RX',info);
+      end;
+
+    end
+    else
+    begin
+      if ckEscuta.Checked then
+      begin
+        RegistraChar('RX',info);
+        if LTCPComponent1.Connected then
+        begin
+           RegistraTCP('SCT',Info);
+           n := LTCPComponent1.SendMessage(Info,LTCPComponent1.Iterator);
+           if( n<length(Info) ) then
+           begin
+               //debug("Erro ao tentar enviar sck!");
+           end;
+        end;
+      end
+      else
+      begin
+        RegistraChar('RX',info);
+      end;
+    end;
+
+
   end;
+
 end;
 
 procedure TForm1.tbConfigContextPopup(Sender: TObject; MousePos: TPoint;
@@ -607,14 +958,48 @@ begin
 
 end;
 
+procedure TForm1.Timer1Timer(Sender: TObject);
+begin
+  if (edSource.text <> '') then
+  begin
+     synSource.Lines.LoadFromFile(edSource.Text );
+     ProcessSource();
+  end;
+end;
+
 procedure TForm1.timerBalancaTimer(Sender: TObject);
 begin
 
 end;
 
+procedure TForm1.tmConectaStartTimer(Sender: TObject);
+begin
+
+end;
+
+procedure TForm1.tmConectaTimer(Sender: TObject);
+begin
+  tmConecta.Enabled:= false;
+  if not flgEstabeleceu then
+  begin
+       RegistraTCP('WAIT' , 'RECONECTANDO'+#13+#10);
+       AtivaTCP();
+       tmConecta.Enabled:= true;
+  end
+  else
+  begin
+       RegistraTCP('WAIT' , 'ESTABELECEU CONEXAO!'+#13+#10);
+  end;
+end;
+
 procedure TForm1.ToggleBox1Change(Sender: TObject);
 begin
-   DataPortTCP1.Close();
+  if (OpenDialog1.Execute) then
+  begin
+     edSource.Text:=OpenDialog1.FileName;
+     synSource.Lines.LoadFromFile(edSource.Text);
+  end;
+
 end;
 
 end.

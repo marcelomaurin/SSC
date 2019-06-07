@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="9"/>
+    <Version Value="10"/>
     <General>
       <MainUnit Value="0"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
       <Icon Value="0"/>
-      <ActiveWindowIndexAtStart Value="0"/>
     </General>
     <i18n>
       <EnableI18N LFM="False"/>
     </i18n>
-    <VersionInfo>
-      <StringTable ProductVersion=""/>
-    </VersionInfo>
     <BuildModes Count="1" Active="Default">
       <Item1 Name="Default" Default="True"/>
     </BuildModes>
@@ -29,29 +25,31 @@
         <LaunchingApplication PathPlusParams="/usr/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
       </local>
     </RunParams>
-    <RequiredPackages Count="4">
+    <RequiredPackages Count="5">
       <Item1>
-        <PackageName Value="FCL"/>
-        <MinVersion Major="1" Valid="True"/>
+        <PackageName Value="lnetvisual"/>
       </Item1>
       <Item2>
-        <PackageName Value="SynEdit"/>
+        <PackageName Value="FCL"/>
         <MinVersion Major="1" Valid="True"/>
       </Item2>
       <Item3>
-        <PackageName Value="SdpoSerialLaz"/>
-        <MinVersion Minor="1" Release="5" Valid="True"/>
+        <PackageName Value="SynEdit"/>
+        <MinVersion Major="1" Valid="True"/>
       </Item3>
       <Item4>
-        <PackageName Value="LCL"/>
+        <PackageName Value="SdpoSerialLaz"/>
+        <MinVersion Minor="1" Release="5" Valid="True"/>
       </Item4>
+      <Item5>
+        <PackageName Value="LCL"/>
+      </Item5>
     </RequiredPackages>
-    <Units Count="7">
+    <Units Count="9">
       <Unit0>
         <Filename Value="teste.lpr"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="teste"/>
-        <UsageCount Value="68"/>
+        <UsageCount Value="71"/>
       </Unit0>
       <Unit1>
         <Filename Value="main.pas"/>
@@ -59,20 +57,14 @@
         <ComponentName Value="Form1"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="main"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="0"/>
-        <WindowIndex Value="0"/>
-        <TopLine Value="229"/>
-        <CursorPos X="35" Y="239"/>
-        <UsageCount Value="68"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="188"/>
+        <CursorPos X="53" Y="204"/>
+        <UsageCount Value="71"/>
       </Unit1>
       <Unit2>
         <Filename Value="/usr/lib/lazarus/0.9.30.2/components/sdpo/SdpoSerial/sdposerial.pas"/>
         <UnitName Value="SdpoSerial"/>
-        <WindowIndex Value="0"/>
         <TopLine Value="193"/>
         <CursorPos X="13" Y="209"/>
         <UsageCount Value="28"/>
@@ -80,15 +72,12 @@
       <Unit3>
         <Filename Value="/usr/lib/lazarus/0.9.30.2/components/h2pas/h2pasconvert.pas"/>
         <UnitName Value="H2PasConvert"/>
-        <WindowIndex Value="0"/>
         <TopLine Value="46"/>
-        <CursorPos X="1" Y="1"/>
         <UsageCount Value="5"/>
       </Unit3>
       <Unit4>
         <Filename Value="/usr/lib/lazarus/0.9.30.2/components/industrial/lazarus-ccr-svn-r6511-components-industrialstuff/source/sensors.pas"/>
         <UnitName Value="Sensors"/>
-        <WindowIndex Value="0"/>
         <TopLine Value="460"/>
         <CursorPos X="26" Y="477"/>
         <UsageCount Value="5"/>
@@ -98,145 +87,34 @@
         <ComponentName Value="Form2"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Tela2"/>
-        <WindowIndex Value="0"/>
         <TopLine Value="2"/>
-        <CursorPos X="1" Y="26"/>
+        <CursorPos Y="26"/>
         <UsageCount Value="19"/>
       </Unit5>
       <Unit6>
         <Filename Value="hexlib.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="hexlib"/>
-        <EditorIndex Value="1"/>
-        <WindowIndex Value="0"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="4"/>
         <CursorPos X="21" Y="11"/>
-        <UsageCount Value="28"/>
-        <Loaded Value="True"/>
+        <UsageCount Value="31"/>
       </Unit6>
+      <Unit7>
+        <Filename Value="../../AppData/Local/lazarus/onlinepackagemanager/packages/Sdpo/SdpoSerial/sdposerial.pas"/>
+        <UnitName Value="SdpoSerial"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="225"/>
+        <CursorPos Y="239"/>
+        <UsageCount Value="10"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="../../../../lazarus/components/lnet/examples/visual/tcpudp/main.pas"/>
+        <IsVisibleTab Value="True"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit8>
     </Units>
-    <JumpHistory Count="30" HistoryIndex="29">
-      <Position1>
-        <Filename Value="main.pas"/>
-        <Caret Line="145" Column="29" TopLine="136"/>
-      </Position1>
-      <Position2>
-        <Filename Value="main.pas"/>
-        <Caret Line="160" Column="27" TopLine="151"/>
-      </Position2>
-      <Position3>
-        <Filename Value="main.pas"/>
-        <Caret Line="170" Column="41" TopLine="152"/>
-      </Position3>
-      <Position4>
-        <Filename Value="main.pas"/>
-        <Caret Line="223" Column="29" TopLine="205"/>
-      </Position4>
-      <Position5>
-        <Filename Value="main.pas"/>
-        <Caret Line="217" Column="29" TopLine="206"/>
-      </Position5>
-      <Position6>
-        <Filename Value="hexlib.pas"/>
-        <Caret Line="24" Column="9" TopLine="7"/>
-      </Position6>
-      <Position7>
-        <Filename Value="hexlib.pas"/>
-        <Caret Line="18" Column="27" TopLine="7"/>
-      </Position7>
-      <Position8>
-        <Filename Value="main.pas"/>
-        <Caret Line="9" Column="78" TopLine="1"/>
-      </Position8>
-      <Position9>
-        <Filename Value="main.pas"/>
-        <Caret Line="217" Column="1" TopLine="206"/>
-      </Position9>
-      <Position10>
-        <Filename Value="main.pas"/>
-        <Caret Line="219" Column="1" TopLine="206"/>
-      </Position10>
-      <Position11>
-        <Filename Value="main.pas"/>
-        <Caret Line="217" Column="1" TopLine="206"/>
-      </Position11>
-      <Position12>
-        <Filename Value="main.pas"/>
-        <Caret Line="227" Column="55" TopLine="226"/>
-      </Position12>
-      <Position13>
-        <Filename Value="main.pas"/>
-        <Caret Line="226" Column="55" TopLine="225"/>
-      </Position13>
-      <Position14>
-        <Filename Value="main.pas"/>
-        <Caret Line="227" Column="55" TopLine="226"/>
-      </Position14>
-      <Position15>
-        <Filename Value="main.pas"/>
-        <Caret Line="112" Column="20" TopLine="100"/>
-      </Position15>
-      <Position16>
-        <Filename Value="main.pas"/>
-        <Caret Line="232" Column="3" TopLine="228"/>
-      </Position16>
-      <Position17>
-        <Filename Value="main.pas"/>
-        <Caret Line="248" Column="3" TopLine="235"/>
-      </Position17>
-      <Position18>
-        <Filename Value="main.pas"/>
-        <Caret Line="250" Column="3" TopLine="237"/>
-      </Position18>
-      <Position19>
-        <Filename Value="main.pas"/>
-        <Caret Line="251" Column="3" TopLine="238"/>
-      </Position19>
-      <Position20>
-        <Filename Value="main.pas"/>
-        <Caret Line="252" Column="3" TopLine="239"/>
-      </Position20>
-      <Position21>
-        <Filename Value="main.pas"/>
-        <Caret Line="259" Column="3" TopLine="246"/>
-      </Position21>
-      <Position22>
-        <Filename Value="main.pas"/>
-        <Caret Line="226" Column="8" TopLine="223"/>
-      </Position22>
-      <Position23>
-        <Filename Value="main.pas"/>
-        <Caret Line="244" Column="3" TopLine="239"/>
-      </Position23>
-      <Position24>
-        <Filename Value="main.pas"/>
-        <Caret Line="245" Column="3" TopLine="240"/>
-      </Position24>
-      <Position25>
-        <Filename Value="main.pas"/>
-        <Caret Line="246" Column="3" TopLine="241"/>
-      </Position25>
-      <Position26>
-        <Filename Value="main.pas"/>
-        <Caret Line="245" Column="3" TopLine="240"/>
-      </Position26>
-      <Position27>
-        <Filename Value="main.pas"/>
-        <Caret Line="246" Column="3" TopLine="241"/>
-      </Position27>
-      <Position28>
-        <Filename Value="main.pas"/>
-        <Caret Line="253" Column="3" TopLine="248"/>
-      </Position28>
-      <Position29>
-        <Filename Value="main.pas"/>
-        <Caret Line="233" Column="29" TopLine="228"/>
-      </Position29>
-      <Position30>
-        <Filename Value="main.pas"/>
-        <Caret Line="250" Column="24" TopLine="248"/>
-      </Position30>
-    </JumpHistory>
+    <JumpHistory HistoryIndex="-1"/>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>
@@ -254,12 +132,6 @@
         </Win32>
       </Options>
     </Linking>
-    <Other>
-      <CompilerMessages>
-        <UseMsgFile Value="True"/>
-      </CompilerMessages>
-      <CompilerPath Value="$(CompPath)"/>
-    </Other>
   </CompilerOptions>
   <Debugging>
     <Exceptions Count="3">
@@ -274,5 +146,4 @@
       </Item3>
     </Exceptions>
   </Debugging>
-  <EditorMacros Count="0"/>
 </CONFIG>
