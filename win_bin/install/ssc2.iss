@@ -5,13 +5,13 @@
 #define MyAppVersion "2.0"
 #define MyAppPublisher "Maurinsoft"
 #define MyAppURL "http://maurinsoft.com.br"
-#define MyAppExeName "MyProg.exe"
+#define MyAppExeName "ssc.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{5E30A86B-7BC9-4891-A43F-E7AAEA1E042B}
+AppId={{81657C6C-4AC4-4959-8BFA-598E9BBAA4B0}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -33,7 +33,7 @@ Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortugue
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Program Files (x86)\Inno Setup 5\Examples\MyProg.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\Zanthus\Desktop\ssc 2\ssc.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\Zanthus\Desktop\ssc 2\ssc.exe"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
