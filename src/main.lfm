@@ -1,14 +1,15 @@
-object Form1: TForm1
+object frmmain: Tfrmmain
   Cursor = crHourGlass
-  Left = 272
+  Left = 283
   Height = 513
-  Top = 240
+  Top = 250
   Width = 609
   BorderStyle = bsDialog
   Caption = 'Software Serial Communication'
   ClientHeight = 493
   ClientWidth = 609
   Menu = MainMenu1
+  OnClose = FormClose
   OnCreate = FormCreate
   ParentBiDiMode = False
   Position = poMainFormCenter
@@ -24,13 +25,11 @@ object Form1: TForm1
     ParentBiDiMode = False
     TabIndex = 0
     TabOrder = 0
-    OnChange = PageControl1Change
     object tbSobre: TTabSheet
       BiDiMode = bdRightToLeft
       Caption = 'About'
       ClientHeight = 465
       ClientWidth = 601
-      OnContextPopup = tbSobreContextPopup
       ParentBiDiMode = False
       object Label6: TLabel
         Left = 120
@@ -63,7 +62,6 @@ object Form1: TForm1
         Color = clForm
         ParentColor = False
         Transparent = False
-        OnClick = Label8Click
       end
       object Label3: TLabel
         Left = 160
@@ -82,15 +80,14 @@ object Form1: TForm1
         ParentColor = False
       end
       object Label13: TLabel
-        Left = 208
+        Left = 232
         Height = 15
         Top = 192
-        Width = 82
-        Caption = 'Version 1.2 Beta'
+        Width = 56
+        Caption = 'Version 2.4'
         Color = clForm
         ParentColor = False
         Transparent = False
-        OnClick = Label8Click
       end
       object Label22: TLabel
         Left = 192
@@ -105,7 +102,6 @@ object Form1: TForm1
       Caption = 'Config'
       ClientHeight = 465
       ClientWidth = 601
-      OnContextPopup = tbConfigContextPopup
       object Label17: TLabel
         Left = 24
         Height = 1
@@ -135,7 +131,6 @@ object Form1: TForm1
           Height = 23
           Top = 16
           Width = 192
-          OnChange = edPortChange
           TabOrder = 0
           Text = 'COM19'
         end
@@ -275,7 +270,6 @@ object Form1: TForm1
           Top = 8
           Width = 99
           Caption = 'Disconnect'
-          OnClick = Button3Click
           TabOrder = 1
         end
         object Button1: TButton
@@ -284,7 +278,6 @@ object Form1: TForm1
           Top = 48
           Width = 99
           Caption = 'FeedBack Teste'
-          OnClick = Button1Click
           TabOrder = 2
         end
         object Button2: TButton
@@ -293,7 +286,6 @@ object Form1: TForm1
           Top = 8
           Width = 99
           Caption = 'Connect'
-          OnClick = Button2Click
           TabOrder = 3
         end
         object btBridge: TButton
@@ -302,7 +294,6 @@ object Form1: TForm1
           Top = 48
           Width = 101
           Caption = 'Modo Bridge'
-          OnClick = btBridgeClick
           TabOrder = 4
         end
         object ckEscuta: TCheckBox
@@ -312,7 +303,6 @@ object Form1: TForm1
           Width = 195
           Caption = 'Habilita Recepção Serial pela TCP'
           Checked = True
-          OnChange = ckEscutaChange
           State = cbChecked
           TabOrder = 5
         end
@@ -406,6 +396,14 @@ object Form1: TForm1
           TabOrder = 4
           Text = '10'
         end
+        object ckExecuta: TCheckBox
+          Left = 408
+          Height = 19
+          Top = 0
+          Width = 115
+          Caption = 'Conecta ao Iniciar'
+          TabOrder = 5
+        end
       end
       object gbTCP: TGroupBox
         Left = 281
@@ -423,7 +421,6 @@ object Form1: TForm1
           Width = 96
           Caption = 'Responde TCP'
           Checked = True
-          OnChange = ckEscutaChange
           State = cbChecked
           TabOrder = 0
         end
@@ -449,7 +446,6 @@ object Form1: TForm1
           Top = 0
           Width = 101
           Caption = 'Connect'
-          OnClick = btConnectSRVClick
           TabOrder = 2
         end
         object btDisconnectSRV: TBitBtn
@@ -458,7 +454,6 @@ object Form1: TForm1
           Top = 40
           Width = 101
           Caption = 'Disconnect'
-          OnClick = btDisconnectSRVClick
           TabOrder = 3
         end
       end
@@ -471,14 +466,12 @@ object Form1: TForm1
         ClientHeight = 92
         ClientWidth = 301
         TabOrder = 4
-        OnClick = GroupBox4Click
         object btConnect: TBitBtn
           Left = 7
           Height = 31
           Top = 0
           Width = 101
           Caption = 'Connect'
-          OnClick = btConnectClick
           TabOrder = 0
         end
         object btFeedbackserial: TButton
@@ -487,7 +480,6 @@ object Form1: TForm1
           Top = 40
           Width = 101
           Caption = 'Feed Back Serial'
-          OnClick = btFeedbackserialClick
           TabOrder = 1
         end
         object btDisconnect: TBitBtn
@@ -496,7 +488,6 @@ object Form1: TForm1
           Top = 0
           Width = 101
           Caption = 'Disconnect'
-          OnClick = btDisconnectClick
           TabOrder = 2
         end
       end
@@ -505,13 +496,11 @@ object Form1: TForm1
       Caption = 'Serial'
       ClientHeight = 465
       ClientWidth = 601
-      OnContextPopup = tbSerialContextPopup
       object edEnviar: TEdit
         Left = 8
         Height = 23
         Top = 418
         Width = 425
-        OnKeyPress = edEnviarKeyPress
         TabOrder = 0
       end
       object Label2: TLabel
@@ -528,7 +517,6 @@ object Form1: TForm1
         Top = 416
         Width = 75
         Caption = 'Send'
-        OnClick = btEnviarClick
         TabOrder = 1
       end
       object btEnter: TButton
@@ -537,8 +525,6 @@ object Form1: TForm1
         Top = 416
         Width = 75
         Caption = 'Enter'
-        OnClick = btEnterClick
-        OnKeyPress = btEnterKeyPress
         TabOrder = 2
       end
       object cbTipo: TPageControl
@@ -550,7 +536,6 @@ object Form1: TForm1
         Align = alTop
         TabIndex = 2
         TabOrder = 3
-        OnChange = cbTipoChange
         object TabSheet1: TTabSheet
           Caption = 'ASCII'
           ClientHeight = 350
@@ -1015,7 +1000,6 @@ object Form1: TForm1
             MouseLinkColor.Foreground = clBlue
             LineHighlightColor.Background = clNone
             LineHighlightColor.Foreground = clNone
-            OnChange = Memo1Change
             inline SynLeftGutterPartList1: TSynGutterPartList
               object SynGutterMarks1: TSynGutterMarks
                 Width = 24
@@ -1517,7 +1501,6 @@ object Form1: TForm1
             MouseLinkColor.Foreground = clBlue
             LineHighlightColor.Background = clNone
             LineHighlightColor.Foreground = clNone
-            OnChange = Memo1Change
             inline SynLeftGutterPartList1: TSynGutterPartList
               object SynGutterMarks1: TSynGutterMarks
                 Width = 24
@@ -2019,7 +2002,6 @@ object Form1: TForm1
             MouseLinkColor.Foreground = clBlue
             LineHighlightColor.Background = clNone
             LineHighlightColor.Foreground = clNone
-            OnChange = Memo1Change
             inline SynLeftGutterPartList1: TSynGutterPartList
               object SynGutterMarks1: TSynGutterMarks
                 Width = 24
@@ -2072,7 +2054,6 @@ object Form1: TForm1
         Align = alTop
         TabIndex = 2
         TabOrder = 0
-        OnChange = cbTipoChange
         object TabSheet5: TTabSheet
           Caption = 'ASCII'
           ClientHeight = 350
@@ -2537,7 +2518,6 @@ object Form1: TForm1
             MouseLinkColor.Foreground = clBlue
             LineHighlightColor.Background = clNone
             LineHighlightColor.Foreground = clNone
-            OnChange = Memo1Change
             inline SynLeftGutterPartList1: TSynGutterPartList
               object SynGutterMarks1: TSynGutterMarks
                 Width = 24
@@ -3039,7 +3019,6 @@ object Form1: TForm1
             MouseLinkColor.Foreground = clBlue
             LineHighlightColor.Background = clNone
             LineHighlightColor.Foreground = clNone
-            OnChange = Memo1Change
             inline SynLeftGutterPartList1: TSynGutterPartList
               object SynGutterMarks1: TSynGutterMarks
                 Width = 24
@@ -3541,7 +3520,6 @@ object Form1: TForm1
             MouseLinkColor.Foreground = clBlue
             LineHighlightColor.Background = clNone
             LineHighlightColor.Foreground = clNone
-            OnChange = Memo1Change
             inline SynLeftGutterPartList1: TSynGutterPartList
               object SynGutterMarks1: TSynGutterMarks
                 Width = 24
@@ -3594,7 +3572,6 @@ object Form1: TForm1
         Color = clForm
         ParentColor = False
         Transparent = False
-        OnClick = Label8Click
       end
       object ckTimmer: TCheckBox
         Left = 16
@@ -3602,7 +3579,6 @@ object Form1: TForm1
         Top = 24
         Width = 131
         Caption = 'Timmer Programmer'
-        OnChange = ckTimmerChange
         TabOrder = 0
       end
       object edTimmer: TEdit
@@ -3634,7 +3610,6 @@ object Form1: TForm1
         Top = 65
         Width = 75
         Caption = 'Open'
-        OnChange = ToggleBox1Change
         TabOrder = 3
       end
     end
@@ -4158,7 +4133,6 @@ object Form1: TForm1
     FlowControl = fcNone
     StopBits = sbOne
     Device = '/dev/ttyS0'
-    OnRxData = SdpoSerial1RxData
     Left = 400
     Top = 408
   end
@@ -4181,22 +4155,18 @@ object Form1: TForm1
       end
       object MenuItem2: TMenuItem
         Caption = 'Save Text'
-        OnClick = MenuItem2Click
       end
       object MenuItem7: TMenuItem
         Caption = 'Source'
         object MenuItem8: TMenuItem
           Caption = 'Save as'
-          OnClick = MenuItem8Click
         end
         object MenuItem9: TMenuItem
           Caption = 'Load'
-          OnClick = MenuItem9Click
         end
       end
       object MenuItem3: TMenuItem
         Caption = 'Close'
-        OnClick = MenuItem3Click
       end
     end
   end
@@ -4207,13 +4177,11 @@ object Form1: TForm1
     Top = 320
   end
   object Timer1: TTimer
-    OnTimer = Timer1Timer
     Left = 472
     Top = 344
   end
   object LTCPComponent1: TLTCPComponent
     Port = 8088
-    OnReceive = LTCPComponent1Receive
     Timeout = 0
     ReuseAddress = False
     Left = 288
@@ -4222,8 +4190,6 @@ object Form1: TForm1
   object tmConecta: TTimer
     Enabled = False
     Interval = 5000
-    OnTimer = tmConectaTimer
-    OnStartTimer = tmConectaStartTimer
     Left = 49
     Top = 438
   end
@@ -7151,19 +7117,13 @@ object Form1: TForm1
     Top = 424
     object MenuItem4: TMenuItem
       Caption = 'Mostrar'
-      OnClick = MenuItem4Click
     end
     object mnSair: TMenuItem
       Caption = 'Sair'
-      OnClick = mnSairClick
     end
   end
   object LTCPComSRV: TLTCPComponent
     Port = 8088
-    OnReceive = LTCPComSRVReceive
-    OnDisconnect = LTCPComSRVDisconnect
-    OnConnect = LTCPComSRVConnect
-    OnAccept = LTCPComSRVAccept
     Timeout = 0
     ReuseAddress = False
     Left = 400
