@@ -8,7 +8,6 @@ Programa de teste e comunicação serial/USB. Permite o acesso a dispositivos Se
 <a href="http://maurinsoft.com.br/index.php/projetos-open-source/projeto-ssc/">Software do Projeto</a>
 
 # Spanish
-Software Serial Communication
 
 Programa de prueba y comunicación serie/USB. Permite el acceso a dispositivos Serial usando TCP, o en modo puente usando Arduino como esclavo.
 ## Sitio web del proyecto en portugués
