@@ -11,7 +11,7 @@ Programa de teste e comunicação serial/USB. Permite o acesso a dispositivos Se
 
 Programa de prueba y comunicación serie/USB. Permite el acceso a dispositivos Serial usando TCP, o en modo puente usando Arduino como esclavo.
 ## Sitio web del proyecto en portugués
-<a href="http://maurinsoft.com.br/index.php/projetos-open-source/projeto-ssc/">Software do Projeto</a>
+<a href="http://maurinsoft.com.br/index.php/projetos-open-source/projeto-ssc/">software de proyecto</a>
 
 
 # English
@@ -19,5 +19,5 @@ Programa de prueba y comunicación serie/USB. Permite el acceso a dispositivos S
 Test program and serial/USB communication. Allows access to Serial devices using TCP, or in bridge mode using Arduino as slave.
 
 ## Site the project in Portugues
-<a href="http://maurinsoft.com.br/index.php/projetos-open-source/projeto-ssc/">Software do Projeto</a>
+<a href="http://maurinsoft.com.br/index.php/projetos-open-source/projeto-ssc/">Project Software</a>
 
