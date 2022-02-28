@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, process, FileUtil, Forms, Controls, Graphics, Dialogs,
   StdCtrls, Buttons, ComCtrls, ExtCtrls, Menus, lNetComponents, SdpoSerial,
-  SynMemo, SynEdit, hexlib, types, lNet, synaser;
+  SynMemo, SynEdit, hexlib, types, lNet, synaser, setssc, funcoes;
 
 const
   MAXBLOCOLINHA = 40;
@@ -15,26 +15,30 @@ const
 
 type
 
-  { TForm1 }
+  { Tfrmmain }
 
-  TForm1 = class(TForm)
+  Tfrmmain = class(TForm)
+    btBridge: TButton;
     btConnect: TBitBtn;
+    btConnectSRV: TBitBtn;
     btDisconnect: TBitBtn;
+    btDisconnectSRV: TBitBtn;
     btEnviar: TButton;
     btEnter: TButton;
-    Button1: TButton;
     btFeedbackserial: TButton;
+    Button1: TButton;
     Button2: TButton;
     Button3: TButton;
-    btBridge: TButton;
     cbBaudrate: TComboBox;
     cbDatabit: TComboBox;
     cbParidade: TComboBox;
     cbStopbit: TComboBox;
     cbTipo1: TPageControl;
+    ckEscuta: TCheckBox;
+    ckExecuta: TCheckBox;
+    ckServidor: TCheckBox;
     ckEsperaCon: TCheckBox;
     ckBlocado: TCheckBox;
-    ckEscuta: TCheckBox;
     ckTimmer: TCheckBox;
     edEnviar: TEdit;
     edHexBloc: TEdit;
@@ -44,10 +48,13 @@ type
     edSource: TEdit;
     edStart: TEdit;
     edTCPPORT: TEdit;
+    edTCPPORT1: TEdit;
     edTimmer: TEdit;
     GroupBox1: TGroupBox;
     GroupBox2: TGroupBox;
     GroupBox3: TGroupBox;
+    gbTCP: TGroupBox;
+    GroupBox4: TGroupBox;
     Label1: TLabel;
     Label10: TLabel;
     Label11: TLabel;
@@ -72,6 +79,7 @@ type
     Label8: TLabel;
     Label9: TLabel;
     LTCPComponent1: TLTCPComponent;
+    LTCPComSRV: TLTCPComponent;
     MainMenu1: TMainMenu;
     Memo1: TSynEdit;
     Memo2: TSynEdit;
@@ -82,6 +90,8 @@ type
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
+    MenuItem4: TMenuItem;
+    mnSair: TMenuItem;
     MenuItem6: TMenuItem;
     MenuItem7: TMenuItem;
     MenuItem8: TMenuItem;
@@ -89,6 +99,7 @@ type
     OpenDialog1: TOpenDialog;
     PageControl1: TPageControl;
     cbTipo: TPageControl;
+    pmtray: TPopupMenu;
     SaveDialog1: TSaveDialog;
     SaveDialog2: TSaveDialog;
     SdpoSerial1: TSdpoSerial;
@@ -103,6 +114,7 @@ type
     tbSocket: TTabSheet;
     tmConecta: TTimer;
     ToggleBox1: TToggleBox;
+    TrayIcon1: TTrayIcon;
     tsSource: TTabSheet;
     tbSerial: TTabSheet;
     tbSobre: TTabSheet;
@@ -110,8 +122,10 @@ type
     Timer1: TTimer;
     procedure btBridgeClick(Sender: TObject);
     procedure btConnectClick(Sender: TObject);
+    procedure btConnectSRVClick(Sender: TObject);
     procedure btDisconnectClick(Sender: TObject);
     procedure btDevicesClick(Sender: TObject);
+    procedure btDisconnectSRVClick(Sender: TObject);
     procedure btEnterClick(Sender: TObject);
     procedure btEnterKeyPress(Sender: TObject; var Key: char);
     procedure btEnviarClick(Sender: TObject);
@@ -124,10 +138,13 @@ type
     procedure Button3Click(Sender: TObject);
     procedure Button5Click(Sender: TObject);
     procedure cbTipoChange(Sender: TObject);
+    procedure ckEscutaChange(Sender: TObject);
     procedure ckTimmerChange(Sender: TObject);
     procedure edEnviarKeyPress(Sender: TObject; var Key: char);
     procedure edPortChange(Sender: TObject);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
+    procedure GroupBox4Click(Sender: TObject);
     procedure Label8Click(Sender: TObject);
     procedure LTCPComponent1Accept(aSocket: TLSocket);
     procedure LTCPComponent1CanSend(aSocket: TLSocket);
@@ -135,12 +152,18 @@ type
     procedure LTCPComponent1Disconnect(aSocket: TLSocket);
     procedure LTCPComponent1Error(const msg: string; aSocket: TLSocket);
     procedure LTCPComponent1Receive(aSocket: TLSocket);
+    procedure LTCPComSRVAccept(aSocket: TLSocket);
+    procedure LTCPComSRVConnect(aSocket: TLSocket);
+    procedure LTCPComSRVDisconnect(aSocket: TLSocket);
+    procedure LTCPComSRVReceive(aSocket: TLSocket);
     procedure Memo1Change(Sender: TObject);
     procedure MenuItem2Click(Sender: TObject);
     procedure MenuItem3Click(Sender: TObject);
+    procedure MenuItem4Click(Sender: TObject);
     procedure MenuItem5Click(Sender: TObject);
     procedure MenuItem8Click(Sender: TObject);
     procedure MenuItem9Click(Sender: TObject);
+    procedure mnSairClick(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
     procedure SdpoSerial1BlockSerialStatus(Sender: TObject;
       Reason: THookSerialReason; const Value: string);
@@ -158,6 +181,7 @@ type
     procedure ToggleBox1Change(Sender: TObject);
     procedure RegistraChar(tipo: string; Info : string);
     procedure RegistraTCP(tipo: string; Info : string);
+    procedure EscutaTCP();
   private
     { private declarations }
     {$IFDEF WINDOWS}
@@ -165,6 +189,7 @@ type
     blocolinhaTCP : integer;
     bufferSerial : string;
     flgEstabeleceu :boolean;
+    aCliente: TLSocket;
 
 
     //FNet: TLConnection;
@@ -191,22 +216,22 @@ type
   end; 
 
 var
-  Form1: TForm1; 
+  frmmain: Tfrmmain;
 
 implementation
 
 {$R *.lfm}
 
-{ TForm1 }
+{ Tfrmmain }
 
 //Analisa a linha em busca de comandos - futuro
-function TForm1.Analise(info : string): string;
+function Tfrmmain.Analise(info : string): string;
 begin
   result := info;
 end;
 
 //Process line in line to send
-procedure TForm1.ProcessSource();
+procedure Tfrmmain.ProcessSource();
 var
   line : integer;
   info : string;
@@ -219,7 +244,7 @@ begin
 
 end;
 
-procedure  TForm1.AtivaTCP();
+procedure  Tfrmmain.AtivaTCP();
 begin
     if   LTCPComponent1.Connected then
     begin
@@ -254,7 +279,7 @@ begin
 
 end;
 
-procedure TForm1.ConectaSerial();
+procedure Tfrmmain.ConectaSerial();
 begin
   SdpoSerial1.close;
   SdpoSerial1.Device:= edPort.Text;
@@ -264,14 +289,31 @@ begin
   SdpoSerial1.StopBits:= TStopBits(cbStopbit.ItemIndex);
   //SdpoSerial1.Open;
   SdpoSerial1.Active:= true;
+  TrayIcon1.Visible:=true;
 end;
 
-procedure TForm1.btConnectClick(Sender: TObject);
+procedure Tfrmmain.btConnectClick(Sender: TObject);
 begin
    ConectaSerial();
 end;
 
-procedure TForm1.btBridgeClick(Sender: TObject);
+procedure Tfrmmain.EscutaTCP();
+begin
+    if(ckServidor.Checked) then
+  begin
+      if LTCPComSRV.Listen(strtoint(edTCPport1.text)) then
+      begin
+
+      end;
+  end;
+end;
+
+procedure Tfrmmain.btConnectSRVClick(Sender: TObject);
+begin
+  EscutaTCP();
+end;
+
+procedure Tfrmmain.btBridgeClick(Sender: TObject);
 begin
  Cursor:= crHourGlass;
  tmConecta.Enabled:= false; //Ativa thread de aguarda echo
@@ -318,7 +360,7 @@ begin
   Cursor:=crDefault;
 end;
 
-procedure TForm1.btDisconnectClick(Sender: TObject);
+procedure Tfrmmain.btDisconnectClick(Sender: TObject);
 begin
   SdpoSerial1.Close;
   if LTCPComponent1.Connected then
@@ -326,12 +368,13 @@ begin
     LTCPComponent1.Disconnect(true);
   end;
   //LTCPComponent1.Active:= false;
+  TrayIcon1.Visible:=false;
 end;
 
 
 {$IFDEF LINUX}
 //Chama Comunicacao com Linux para ver devices
-procedure TForm1.ChamaLinux();
+procedure Tfrmmain.ChamaLinux();
 var
    s : ansistring;
 begin
@@ -345,14 +388,14 @@ end;
 
 {$IFDEF WINDOWS}
 //Chama Comunicacao com Windows
-procedure TForm1.ChamaWindows();
+procedure Tfrmmain.ChamaWindows();
 begin
 
 end;
 {$ENDIF}
 
 
-procedure TForm1.btDevicesClick(Sender: TObject);
+procedure Tfrmmain.btDevicesClick(Sender: TObject);
 begin
   {$IFDEF LINUX}
           //FDevice:='/dev/ttyS0';
@@ -364,7 +407,12 @@ begin
   {$ENDIF}
 end;
 
-procedure TForm1.btEnterClick(Sender: TObject);
+procedure Tfrmmain.btDisconnectSRVClick(Sender: TObject);
+begin
+  LTCPComSRV.Disconnect(true);
+end;
+
+procedure Tfrmmain.btEnterClick(Sender: TObject);
 var
    info : string;
 begin
@@ -392,12 +440,12 @@ begin
   end;
 end;
 
-procedure TForm1.btEnterKeyPress(Sender: TObject; var Key: char);
+procedure Tfrmmain.btEnterKeyPress(Sender: TObject; var Key: char);
 begin
 
 end;
 
-procedure TForm1.btEnviarClick(Sender: TObject);
+procedure Tfrmmain.btEnviarClick(Sender: TObject);
 var
    info : string;
 begin
@@ -419,7 +467,7 @@ begin
        end;
 end;
 
-procedure TForm1.btFeedbbackSChange(Sender: TObject);
+procedure Tfrmmain.btFeedbbackSChange(Sender: TObject);
 var
    info : string;
 begin
@@ -434,13 +482,13 @@ begin
   end;
 end;
 
-procedure TForm1.btImprimirClick(Sender: TObject);
+procedure Tfrmmain.btImprimirClick(Sender: TObject);
 
 begin
 
 end;
 
-procedure TForm1.btZeraClick(Sender: TObject);
+procedure Tfrmmain.btZeraClick(Sender: TObject);
 begin
   if SdpoSerial1.Active then
   begin
@@ -448,7 +496,7 @@ begin
   end;
 end;
 
-procedure TForm1.Echooa();
+procedure Tfrmmain.Echooa();
 var
    info : string;
    n : integer;
@@ -472,12 +520,12 @@ begin
   end;
 end;
 
-procedure TForm1.Button1Click(Sender: TObject);
+procedure Tfrmmain.Button1Click(Sender: TObject);
 begin
   ECHOOA;
 end;
 
-procedure TForm1.btFeedbackserialClick(Sender: TObject);
+procedure Tfrmmain.btFeedbackserialClick(Sender: TObject);
 var
    info : string;
 begin
@@ -488,12 +536,12 @@ begin
   end;
 end;
 
-procedure TForm1.Button2Click(Sender: TObject);
+procedure Tfrmmain.Button2Click(Sender: TObject);
 begin
   AtivaTCP();
 end;
 
-procedure TForm1.Button3Click(Sender: TObject);
+procedure Tfrmmain.Button3Click(Sender: TObject);
 begin
   LTCPComponent1.Disconnect(true);
   tmConecta.Enabled:=false;
@@ -501,20 +549,20 @@ end;
 
 
 {$IFDEF LINUX}
-procedure TForm1.AudioLinux();
+procedure Tfrmmain.AudioLinux();
 begin
 
 end;
 {$ENDIF}
 
 {$IFDEF WINDOWS}
-procedure TForm1.AudioWindows();
+procedure Tfrmmain.AudioWindows();
 begin
 
 end;
 {$ENDIF}
 
-procedure TForm1.Button5Click(Sender: TObject);
+procedure Tfrmmain.Button5Click(Sender: TObject);
 begin
   {$IFDEF LINUX}
           //FDevice:='/dev/ttyS0';
@@ -526,7 +574,7 @@ begin
   {$ENDIF}
 end;
 
-procedure TForm1.cbTipoChange(Sender: TObject);
+procedure Tfrmmain.cbTipoChange(Sender: TObject);
 begin
   if (edEnviar.text <>'') then
   begin
@@ -541,7 +589,19 @@ begin
   end;
 end;
 
-procedure TForm1.ckTimmerChange(Sender: TObject);
+procedure Tfrmmain.ckEscutaChange(Sender: TObject);
+begin
+  if ckEscuta.Checked then
+  begin
+      btBridge.Enabled:= true;
+  end
+  else
+  begin
+      btBridge.Enabled:= false;
+  end;
+end;
+
+procedure Tfrmmain.ckTimmerChange(Sender: TObject);
 begin
   Timer1.Enabled:=false;
   Timer1.Interval:=strtoint(edTimmer.text);
@@ -549,7 +609,7 @@ begin
   Timer1.Enabled:= ckTimmer.Enabled;
 end;
 
-procedure TForm1.edEnviarKeyPress(Sender: TObject; var Key: char);
+procedure Tfrmmain.edEnviarKeyPress(Sender: TObject; var Key: char);
 begin
   if (key = #13) then
   begin
@@ -557,34 +617,51 @@ begin
   end;
 end;
 
-procedure TForm1.edPortChange(Sender: TObject);
+procedure Tfrmmain.edPortChange(Sender: TObject);
 begin
 
 end;
 
-procedure TForm1.FormCreate(Sender: TObject);
+procedure Tfrmmain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
-    {$IFDEF LINUX}
-          edPort.text:='/dev/ttyS0';
+  FSetssc.posx := self.Left;
+  FSetssc.posy := self.top;
+  FSetssc.COMPORT := edPort.text;
+  FSetssc.BAUDRATE:= cbBaudrate.ItemIndex;
+  FSetssc.EXEC:= iif(ckExecuta.Checked,1,0);
+  FSetssc.SalvaContexto();
+end;
 
-  {$ENDIF}
-  {$IFDEF WINDOWS}
-          edPort.text:='COM13';
-
-  {$ENDIF}
+procedure Tfrmmain.FormCreate(Sender: TObject);
+begin
   blocolinha := 0; //Inicia bloco de linha
   blocolinhaTCP := 0; //Inicia bloco de linha
   FIsServer := False;
+  TrayIcon1.Visible:=false;
+  aCliente := nil;
+  FSetssc  := TSetSSC.create();
+  Fsetssc.CarregaContexto();
+  self.Left:= FSetssc.posx;
+  self.top:=FSetssc.posy;
+  PageControl1.ActivePageIndex := 0;
+  edPort.text := FSetssc.COMPORT;
+  cbBaudrate.ItemIndex:= FSetssc.BAUDRATE;
+  ckExecuta.Checked:= FSetssc.EXEC;
 
 
 end;
 
-procedure TForm1.Label8Click(Sender: TObject);
+procedure Tfrmmain.GroupBox4Click(Sender: TObject);
 begin
 
 end;
 
-procedure TForm1.LTCPComponent1Accept(aSocket: TLSocket);
+procedure Tfrmmain.Label8Click(Sender: TObject);
+begin
+
+end;
+
+procedure Tfrmmain.LTCPComponent1Accept(aSocket: TLSocket);
 var
    info : string;
 begin
@@ -592,12 +669,12 @@ begin
   RegistraTCP('ACE' , INFO);
 end;
 
-procedure TForm1.LTCPComponent1CanSend(aSocket: TLSocket);
+procedure Tfrmmain.LTCPComponent1CanSend(aSocket: TLSocket);
 begin
 
 end;
 
-procedure TForm1.LTCPComponent1Connect(aSocket: TLSocket);
+procedure Tfrmmain.LTCPComponent1Connect(aSocket: TLSocket);
 var
    info : string;
 begin
@@ -607,7 +684,7 @@ begin
   RegistraTCP('CON' , info);
 end;
 
-procedure TForm1.LTCPComponent1Disconnect(aSocket: TLSocket);
+procedure Tfrmmain.LTCPComponent1Disconnect(aSocket: TLSocket);
 var
    info : string;
 begin
@@ -616,7 +693,7 @@ begin
 
 end;
 
-procedure TForm1.LTCPComponent1Error(const msg: string; aSocket: TLSocket);
+procedure Tfrmmain.LTCPComponent1Error(const msg: string; aSocket: TLSocket);
 var
    info : string;
 begin
@@ -624,7 +701,7 @@ begin
   RegistraTCP('ERRO' , 'info');
 end;
 
-procedure TForm1.LTCPComponent1Receive(aSocket: TLSocket);
+procedure Tfrmmain.LTCPComponent1Receive(aSocket: TLSocket);
 var
    info : string;
 begin
@@ -646,12 +723,49 @@ begin
    end;
 end;
 
-procedure TForm1.Memo1Change(Sender: TObject);
+procedure Tfrmmain.LTCPComSRVAccept(aSocket: TLSocket);
+begin
+  if (aCliente = nil)  then
+  begin
+      RegistraChar('TCP Accept:', aSocket.PeerAddress);
+      aCliente := aSocket;
+  end;
+end;
+
+procedure Tfrmmain.LTCPComSRVConnect(aSocket: TLSocket);
+begin
+  RegistraChar('TCP Connect:', aSocket.PeerAddress);
+end;
+
+procedure Tfrmmain.LTCPComSRVDisconnect(aSocket: TLSocket);
+begin
+  RegistraChar('TCP Disconect:', aSocket.PeerAddress);
+  aCliente := nil;
+end;
+
+procedure Tfrmmain.LTCPComSRVReceive(aSocket: TLSocket);
+var
+   info : string;
+   tam : integer;
+begin
+  tam := aSocket.GetMessage(info);
+  if (tam <>0) then
+  begin
+    //RegistraChar('TCP Rcv:', info);
+    RegistraTCP('TCR' , info);
+    if(SdpoSerial1.Active) then
+    begin
+      SdpoSerial1.WriteData(info);
+    end;
+  end;
+end;
+
+procedure Tfrmmain.Memo1Change(Sender: TObject);
 begin
 
 end;
 
-procedure TForm1.MenuItem2Click(Sender: TObject);
+procedure Tfrmmain.MenuItem2Click(Sender: TObject);
 begin
   if (SaveDialog1.Execute) then
   begin
@@ -660,17 +774,22 @@ begin
   end;
 end;
 
-procedure TForm1.MenuItem3Click(Sender: TObject);
+procedure Tfrmmain.MenuItem3Click(Sender: TObject);
 begin
   Close();
 end;
 
-procedure TForm1.MenuItem5Click(Sender: TObject);
+procedure Tfrmmain.MenuItem4Click(Sender: TObject);
+begin
+  show();
+end;
+
+procedure Tfrmmain.MenuItem5Click(Sender: TObject);
 begin
   ShowMessage('Not yet!');
 end;
 
-procedure TForm1.MenuItem8Click(Sender: TObject);
+procedure Tfrmmain.MenuItem8Click(Sender: TObject);
 begin
   if (SaveDialog1.Execute) then
   begin
@@ -678,17 +797,22 @@ begin
   end;
 end;
 
-procedure TForm1.MenuItem9Click(Sender: TObject);
+procedure Tfrmmain.MenuItem9Click(Sender: TObject);
 begin
   ToggleBox1Change(self); //Carrega o arquivo
 end;
 
-procedure TForm1.PageControl1Change(Sender: TObject);
+procedure Tfrmmain.mnSairClick(Sender: TObject);
+begin
+  close();
+end;
+
+procedure Tfrmmain.PageControl1Change(Sender: TObject);
 begin
 
 end;
 
-procedure TForm1.SdpoSerial1BlockSerialStatus(Sender: TObject;
+procedure Tfrmmain.SdpoSerial1BlockSerialStatus(Sender: TObject;
   Reason: THookSerialReason; const Value: string);
 begin
   case Reason of
@@ -709,19 +833,19 @@ begin
   end;
 end;
 
-function TForm1.hextostr(info: string): string;
+function Tfrmmain.hextostr(info: string): string;
 begin
   result := HexToString(info);
 
 end;
 
-function TForm1.strtohex(info : string) : string;
+function Tfrmmain.strtohex(info : string) : string;
 begin
   result := StringToHex(info);
 end;
 
 
-procedure TForm1.RegistraChar(tipo: string; Info : string);
+procedure Tfrmmain.RegistraChar(tipo: string; Info : string);
 var
    linha : string;
    a : integer;
@@ -777,7 +901,7 @@ begin
   //blocolinha := 0;
 end;
 
-procedure TForm1.RegistraTCP(tipo: string; Info : string);
+procedure Tfrmmain.RegistraTCP(tipo: string; Info : string);
 var
    linha : string;
    a : integer;
@@ -838,7 +962,7 @@ begin
 end;
 
 
-procedure TForm1.AnalisaBloco();
+procedure Tfrmmain.AnalisaBloco();
 var
   trabalho : string;
   n : integer;
@@ -876,7 +1000,7 @@ begin
 
 end;
 
-procedure TForm1.SdpoSerial1RxData(Sender: TObject);
+procedure Tfrmmain.SdpoSerial1RxData(Sender: TObject);
 var
   Info : String;
   n : integer;
@@ -893,6 +1017,16 @@ begin
   else
   begin    //Nao blocado
     RegistraChar('SRX',info);
+    if( ckServidor.Checked) then
+    begin
+      if (aCliente<> nil) then
+      begin
+        if(LTCPComSRV.Active) then
+        begin
+           aCliente.SendMessage(info);
+        end;
+      end;
+    end;
     if ckEsperaCon.Checked then
     begin
       if ckEscuta.Checked then
@@ -940,25 +1074,25 @@ begin
 
 end;
 
-procedure TForm1.tbConfigContextPopup(Sender: TObject; MousePos: TPoint;
+procedure Tfrmmain.tbConfigContextPopup(Sender: TObject; MousePos: TPoint;
   var Handled: Boolean);
 begin
 
 end;
 
-procedure TForm1.tbSerialContextPopup(Sender: TObject; MousePos: TPoint;
+procedure Tfrmmain.tbSerialContextPopup(Sender: TObject; MousePos: TPoint;
   var Handled: Boolean);
 begin
 
 end;
 
-procedure TForm1.tbSobreContextPopup(Sender: TObject; MousePos: TPoint;
+procedure Tfrmmain.tbSobreContextPopup(Sender: TObject; MousePos: TPoint;
   var Handled: Boolean);
 begin
 
 end;
 
-procedure TForm1.Timer1Timer(Sender: TObject);
+procedure Tfrmmain.Timer1Timer(Sender: TObject);
 begin
   if (edSource.text <> '') then
   begin
@@ -967,17 +1101,17 @@ begin
   end;
 end;
 
-procedure TForm1.timerBalancaTimer(Sender: TObject);
+procedure Tfrmmain.timerBalancaTimer(Sender: TObject);
 begin
 
 end;
 
-procedure TForm1.tmConectaStartTimer(Sender: TObject);
+procedure Tfrmmain.tmConectaStartTimer(Sender: TObject);
 begin
 
 end;
 
-procedure TForm1.tmConectaTimer(Sender: TObject);
+procedure Tfrmmain.tmConectaTimer(Sender: TObject);
 begin
   tmConecta.Enabled:= false;
   if not flgEstabeleceu then
@@ -992,7 +1126,7 @@ begin
   end;
 end;
 
-procedure TForm1.ToggleBox1Change(Sender: TObject);
+procedure Tfrmmain.ToggleBox1Change(Sender: TObject);
 begin
   if (OpenDialog1.Execute) then
   begin
