@@ -25,12 +25,16 @@ type
   private
         arquivo :Tstringlist;
         ckdevice : boolean;
+        FPATH : string;
         FPosX : integer;
         FPosY : integer;
         FHide : boolean;
         FEXEC : boolean;
         FCOM  : string;
         FBAUD : integer;
+        FDTBIT : integer;
+        FPARI : integer;
+        FSTBIT : integer;
 
         procedure Default();
         procedure SetPOSX(value : integer);
@@ -40,6 +44,9 @@ type
         procedure SetEXEC(value : boolean);
         procedure SetCOM(value : string);
         procedure SetBAUD(value : integer);
+        procedure SetDTBIT(value : integer);
+        procedure SetPARI(value : integer);
+        procedure SetSTBIT(value : integer);
 
   public
         procedure SalvaContexto();
@@ -51,6 +58,9 @@ type
         property EXEC : boolean read FEXEC write SetEXEC;
         property COMPORT : string read FCOM write SetCOM;
         property BAUDRATE :integer read FBAUD write SetBAUD;
+        property DATABIT :integer read FDTBIT write SetDTBIT;
+        property PARIDADE :integer read FPARI write SetPARI;
+        property STOPBIT :integer read FSTBIT write SetSTBIT;
   end;
 
   var
@@ -94,6 +104,21 @@ begin
   FBAUD := value;
 end;
 
+procedure TSetssc.SetDTBIT(value: integer);
+begin
+  FDTBIT := value;
+end;
+
+procedure TSetssc.SetPARI(value: integer);
+begin
+  FPARI := value;
+end;
+
+procedure TSetssc.SetSTBIT(value: integer);
+begin
+  FSTBIT := value;
+end;
+
 
 //Valores default do codigo
 procedure TSetssc.Default();
@@ -108,7 +133,9 @@ begin
     FCOM :='COM13';
     {$ENDIF}
     FBAUD := 3; (* 2400 *)
-
+    FDTBIT := 0; (* data bit 8 *)
+    FPARI := 0;  (* Pari N *)
+    FSTBIT := 0; (* STOP bit 1 *)
 end;
 
 procedure TSetssc.CarregaContexto();
@@ -143,16 +170,38 @@ begin
     begin
       FBAUD := strtoint(RetiraInfo(arquivo.Strings[posicao]));
     end;
-
+    if  BuscaChave(arquivo,'DATABIT:',posicao) then
+    begin
+      FDTBIT := strtoint(RetiraInfo(arquivo.Strings[posicao]));
+    end;
+    if  BuscaChave(arquivo,'PARIDADE:',posicao) then
+    begin
+      FPARI := strtoint(RetiraInfo(arquivo.Strings[posicao]));
+    end;
+    if  BuscaChave(arquivo,'STOPBIT:',posicao) then
+    begin
+      FSTBIT := strtoint(RetiraInfo(arquivo.Strings[posicao]));
+    end;
 end;
 
 //Metodo construtor
 constructor TSetssc.create();
 begin
   arquivo := TStringList.create();
-  if (FileExists(filename)) then
+  {$IFDEF LINUX}
+      Fpath :='/~/';
+  {$ENDIF}
+  {$IFDEF WINDOWS}
+      Fpath :=GetAppConfigDir(false);
+      if not(FileExists(FPATH)) then
+      begin
+         createdir(fpath);
+      end;
+  {$ENDIF}
+
+  if (FileExists(fpath+filename)) then
   begin
-    arquivo.LoadFromFile(filename);
+    arquivo.LoadFromFile(fpath+filename);
     CarregaContexto();
   end
   else
@@ -172,8 +221,10 @@ begin
   arquivo.Append('EXEC:'+booltostr(FEXEC));
   arquivo.Append('COMPORT:'+FCOM);
   arquivo.Append('BAUDRATE:'+ inttostr(FBAUD));
-
-  arquivo.SaveToFile(filename);
+  arquivo.Append('DATABIT:'+ inttostr(FDTBIT));
+  arquivo.Append('PARIDADE:'+ inttostr(FPARI));
+  arquivo.Append('STOPBIT:'+ inttostr(FSTBIT));
+  arquivo.SaveToFile(fpath+filename);
 end;
 
 destructor TSetssc.destroy();

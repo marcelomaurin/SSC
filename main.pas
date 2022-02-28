@@ -629,6 +629,10 @@ begin
   FSetssc.COMPORT := edPort.text;
   FSetssc.BAUDRATE:= cbBaudrate.ItemIndex;
   FSetssc.EXEC:= iif(ckExecuta.Checked,1,0);
+  FSetssc.DATABIT :=  cbDatabit.ItemIndex;
+  FSetssc.STOPBIT := cbStopbit.ItemIndex;
+  FSetssc.PARIDADE := cbParidade.ItemIndex;
+
   FSetssc.SalvaContexto();
 end;
 
@@ -646,9 +650,10 @@ begin
   PageControl1.ActivePageIndex := 0;
   edPort.text := FSetssc.COMPORT;
   cbBaudrate.ItemIndex:= FSetssc.BAUDRATE;
+  cbDatabit.ItemIndex:= FSetssc.DATABIT;
+  cbStopbit.ItemIndex:= FSetssc.STOPBIT;
+  cbParidade.ItemIndex:= FSetssc.PARIDADE;
   ckExecuta.Checked:= FSetssc.EXEC;
-
-
 end;
 
 procedure Tfrmmain.GroupBox4Click(Sender: TObject);
