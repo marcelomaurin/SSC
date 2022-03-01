@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=SSC2
+Comment=USB/Serial Communicator
+Icon=/usr/share/icons/hicolor/ssc2.png
+Exec=/usr/bin/ssc2
+Terminal=false
+Type=Application
+Categories=Programming;Others
+GenericName=ssc2
