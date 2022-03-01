@@ -127,7 +127,7 @@ begin
     FEXEC := false;
     FHide:= false;
     {$IFDEF LINUX}
-    FCOM := '':='/dev/ttyS0';
+    FCOM := '/dev/ttyS0';
     {$ENDIF}
     {$IFDEF WINDOWS}
     FCOM :='COM13';
@@ -189,7 +189,13 @@ constructor TSetssc.create();
 begin
   arquivo := TStringList.create();
   {$IFDEF LINUX}
-      Fpath :='/~/';
+      //Fpath :='/home/';
+      //Fpath := GetUserDir()
+      Fpath :=GetAppConfigDir(false);
+      if not(FileExists(FPATH)) then
+      begin
+         createdir(fpath);
+      end;
   {$ENDIF}
   {$IFDEF WINDOWS}
       Fpath :=GetAppConfigDir(false);
