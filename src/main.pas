@@ -183,21 +183,21 @@ type
     procedure RegistraTCP(tipo: string; Info : string);
     procedure EscutaTCP();
   private
+
     { private declarations }
-    {$IFDEF WINDOWS}
     blocolinha : integer;
     blocolinhaTCP : integer;
     bufferSerial : string;
     flgEstabeleceu :boolean;
     aCliente: TLSocket;
-
-
     //FNet: TLConnection;
     FIsServer: Boolean;
+
+    procedure  AtivaTCP();
     procedure ConectaSerial();
+    {$IFDEF WINDOWS}
     procedure ChamaWindows();
     procedure AudioWindows();
-    procedure  AtivaTCP();
     {$ENDIF}
     {$IFDEF LINUX}
     procedure ChamaLinux();
@@ -246,7 +246,7 @@ end;
 
 procedure  Tfrmmain.AtivaTCP();
 begin
-    if   LTCPComponent1.Connected then
+    if(LTCPComponent1.Connected) then
     begin
         LTCPComponent1.Disconnect(true);
         Application.ProcessMessages;
