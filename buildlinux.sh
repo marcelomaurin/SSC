@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSAO="2.4.1"
+VERSAO="2.4.2"
 
 ARQUITETURA=$(uname -m)
 case $(uname -m) in
