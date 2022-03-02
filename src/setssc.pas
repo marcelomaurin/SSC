@@ -189,13 +189,11 @@ constructor TSetssc.create();
 begin
   arquivo := TStringList.create();
   {$IFDEF LINUX}
-      //Fpath :='/home/';
-      //Fpath := GetUserDir()
-      Fpath :=GetAppConfigDir(false);
-      if not(FileExists(FPATH)) then
-      begin
-         createdir(fpath);
-      end;
+   Fpath :=GetAppConfigDir(false);
+   if not(FileExists(FPATH)) then
+   begin
+      createdir(fpath);
+   end;
   {$ENDIF}
   {$IFDEF WINDOWS}
       Fpath :=GetAppConfigDir(false);
