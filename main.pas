@@ -184,25 +184,23 @@ type
     procedure EscutaTCP();
   private
     { private declarations }
-    {$IFDEF WINDOWS}
     blocolinha : integer;
     blocolinhaTCP : integer;
     bufferSerial : string;
     flgEstabeleceu :boolean;
     aCliente: TLSocket;
-
-
     //FNet: TLConnection;
     FIsServer: Boolean;
+
     procedure ConectaSerial();
+    procedure  AtivaTCP();
+    {$IFDEF WINDOWS}
     procedure ChamaWindows();
     procedure AudioWindows();
-    procedure  AtivaTCP();
     {$ENDIF}
     {$IFDEF LINUX}
     procedure ChamaLinux();
     procedure AudioLinux();
-
     {$ENDIF}
     function strtohex(info : string) : string;
     function hextostr(info: string): string;

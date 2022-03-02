@@ -17,11 +17,12 @@ then
 	EXTENSION="_${ARQUITETURA}"
 	echo "AMD64 Script"
 	echo "Preparando binarios"
-	cp ./src/ssc2 ./instalador/ssc2/usr/bin/ssc2
+	chmod 777 ./src/ssc2
+	cp  ./ssc ./instalador/ssc2/usr/bin/ssc2
 	chmod 777 ./instalador/ssc2/usr/bin/ssc2
 	cp ./src/ssc2.png ./instalador/ssc2/usr/share/icons/hicolor/ssc2.png
 	cp ./instalador/ssc2.desktop ./instalador/ssc2/usr/share/applications/ssc2.desktop
-	#ln -s /usr/bin/ssc2 ./instalador/ssc2/usr/share/applications/ssc2
+	ln -sf /usr/bin/ssc2 ./instalador/ssc2/usr/share/applications/ssc2
 	echo "Empacotando"
 	dpkg-deb --build ./instalador/ssc2
 	echo "Copiando para pasta do repositorio"
