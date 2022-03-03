@@ -63,9 +63,8 @@
       <Unit0>
         <Filename Value="ssc.lpr"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <CursorPos X="83" Y="8"/>
+        <CursorPos X="60" Y="11"/>
         <UsageCount Value="141"/>
         <Loaded Value="True"/>
       </Unit0>
@@ -75,6 +74,7 @@
         <ComponentName Value="frmmain"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <TopLine Value="183"/>
         <CursorPos X="67" Y="188"/>
         <UsageCount Value="141"/>

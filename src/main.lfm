@@ -1,12 +1,12 @@
 object frmmain: Tfrmmain
   Cursor = crHourGlass
-  Left = 299
-  Height = 558
-  Top = 147
+  Left = 164
+  Height = 589
+  Top = 88
   Width = 609
   BorderStyle = bsDialog
   Caption = 'Software Serial Communication'
-  ClientHeight = 533
+  ClientHeight = 561
   ClientWidth = 609
   Menu = MainMenu1
   OnClose = FormClose
@@ -16,19 +16,19 @@ object frmmain: Tfrmmain
   LCLVersion = '2.2.0.4'
   object PageControl1: TPageControl
     Left = 0
-    Height = 533
+    Height = 561
     Top = 0
     Width = 609
-    ActivePage = tbSerial
+    ActivePage = tbConfig
     Align = alClient
     DockSite = True
     ParentBiDiMode = False
-    TabIndex = 2
+    TabIndex = 1
     TabOrder = 0
     object tbSobre: TTabSheet
       BiDiMode = bdRightToLeft
       Caption = 'About'
-      ClientHeight = 502
+      ClientHeight = 513
       ClientWidth = 599
       ParentBiDiMode = False
       object Label6: TLabel
@@ -46,54 +46,54 @@ object frmmain: Tfrmmain
       end
       object Label7: TLabel
         Left = 176
-        Height = 17
+        Height = 22
         Top = 128
-        Width = 250
+        Width = 261
         Caption = 'Developer to Marcelo Maurin Martins'
       end
       object Label8: TLabel
         Left = 232
-        Height = 17
+        Height = 22
         Top = 240
-        Width = 70
+        Width = 78
         Caption = '2019/2022'
         Color = clForm
         Transparent = False
       end
       object Label3: TLabel
         Left = 160
-        Height = 17
+        Height = 22
         Top = 304
-        Width = 238
+        Width = 251
         Caption = 'marcelomaurinmartins@gmail.com'
       end
       object Label12: TLabel
         Left = 192
-        Height = 17
+        Height = 22
         Top = 280
-        Width = 145
+        Width = 151
         Caption = 'Send me feedback to:'
       end
       object Label13: TLabel
         Left = 232
-        Height = 17
+        Height = 22
         Top = 192
-        Width = 86
+        Width = 92
         Caption = 'Version 2.4.2'
         Color = clForm
         Transparent = False
       end
       object Label22: TLabel
         Left = 192
-        Height = 17
+        Height = 22
         Top = 152
-        Width = 172
+        Width = 171
         Caption = 'http://maurinsoft.com.br'
       end
     end
     object tbConfig: TTabSheet
       Caption = 'Config'
-      ClientHeight = 502
+      ClientHeight = 513
       ClientWidth = 599
       object Label17: TLabel
         Left = 24
@@ -107,35 +107,35 @@ object frmmain: Tfrmmain
         Top = 0
         Width = 264
         Caption = 'Serial'
-        ClientHeight = 238
+        ClientHeight = 233
         ClientWidth = 262
         TabOrder = 0
         object Label1: TLabel
           Left = 10
-          Height = 17
-          Top = 0
-          Width = 34
+          Height = 22
+          Top = -7
+          Width = 32
           Caption = 'Port:'
         end
         object edPort: TEdit
           Left = 8
-          Height = 33
-          Top = 16
+          Height = 32
+          Top = 10
           Width = 192
           TabOrder = 0
           Text = 'COM19'
         end
         object Label4: TLabel
           Left = 10
-          Height = 17
-          Top = 47
+          Height = 22
+          Top = 40
           Width = 55
           Caption = 'Databit:'
         end
         object cbDatabit: TComboBox
           Left = 8
-          Height = 33
-          Top = 63
+          Height = 32
+          Top = 58
           Width = 192
           ItemHeight = 0
           ItemIndex = 0
@@ -150,15 +150,15 @@ object frmmain: Tfrmmain
         end
         object Label5: TLabel
           Left = 8
-          Height = 17
-          Top = 93
-          Width = 66
+          Height = 22
+          Top = 87
+          Width = 67
           Caption = 'Baudrate:'
         end
         object cbBaudrate: TComboBox
           Left = 8
-          Height = 33
-          Top = 109
+          Height = 32
+          Top = 105
           Width = 192
           ItemHeight = 0
           ItemIndex = 3
@@ -182,15 +182,15 @@ object frmmain: Tfrmmain
         end
         object Label9: TLabel
           Left = 9
-          Height = 17
-          Top = 141
-          Width = 65
+          Height = 22
+          Top = 134
+          Width = 66
           Caption = 'Paridade:'
         end
         object cbParidade: TComboBox
           Left = 8
-          Height = 33
-          Top = 155
+          Height = 32
+          Top = 153
           Width = 191
           ItemHeight = 0
           ItemIndex = 0
@@ -206,15 +206,15 @@ object frmmain: Tfrmmain
         end
         object Label10: TLabel
           Left = 10
-          Height = 17
-          Top = 188
-          Width = 58
+          Height = 22
+          Top = 182
+          Width = 59
           Caption = 'Stop Bit:'
         end
         object cbStopbit: TComboBox
           Left = 8
-          Height = 33
-          Top = 203
+          Height = 32
+          Top = 201
           Width = 192
           ItemHeight = 0
           ItemIndex = 0
@@ -232,20 +232,20 @@ object frmmain: Tfrmmain
         Top = 259
         Width = 576
         Caption = 'TCP Arduino Client'
-        ClientHeight = 94
+        ClientHeight = 89
         ClientWidth = 574
         TabOrder = 1
         object Label18: TLabel
           Left = 16
-          Height = 17
-          Top = 42
-          Width = 40
+          Height = 22
+          Top = 34
+          Width = 44
           Caption = 'HOST:'
         end
         object edHost: TEdit
           Left = 16
-          Height = 33
-          Top = 58
+          Height = 32
+          Top = 52
           Width = 112
           TabOrder = 0
           Text = '192.168.2.70'
@@ -284,9 +284,9 @@ object frmmain: Tfrmmain
         end
         object ckEscuta: TCheckBox
           Left = 16
-          Height = 23
-          Top = 16
-          Width = 249
+          Height = 26
+          Top = 6
+          Width = 268
           Caption = 'Habilita Recepção Serial pela TCP'
           Checked = True
           State = cbChecked
@@ -294,95 +294,95 @@ object frmmain: Tfrmmain
         end
         object edTCPPORT: TEdit
           Left = 146
-          Height = 33
-          Top = 58
+          Height = 32
+          Top = 52
           Width = 80
           TabOrder = 6
           Text = '8088'
         end
         object Label11: TLabel
           Left = 144
-          Height = 17
-          Top = 42
-          Width = 34
+          Height = 22
+          Top = 34
+          Width = 32
           Caption = 'Port:'
         end
       end
       object GroupBox3: TGroupBox
         Left = 0
-        Height = 126
+        Height = 134
         Top = 374
         Width = 584
         Caption = 'Parametros'
-        ClientHeight = 108
+        ClientHeight = 111
         ClientWidth = 582
         TabOrder = 2
         object ckBlocado: TCheckBox
           Left = 8
-          Height = 23
+          Height = 26
           Top = 0
-          Width = 120
+          Width = 129
           Caption = 'Envio Blocado'
           TabOrder = 0
         end
         object edHexBloc: TEdit
-          Left = 137
-          Height = 33
-          Top = 16
+          Left = 141
+          Height = 32
+          Top = 21
           Width = 144
           TabOrder = 1
           Text = '0D0A'
         end
         object edStart: TEdit
-          Left = 8
-          Height = 33
-          Top = 73
+          Left = 7
+          Height = 32
+          Top = 77
           Width = 240
           TabOrder = 2
           Text = 'Bem vindo GATEWAY ON!'
         end
         object Label20: TLabel
-          Left = 136
-          Height = 17
+          Left = 141
+          Height = 22
           Top = 0
-          Width = 117
+          Width = 126
           Caption = 'Bloco Hexa String'
         end
         object Label21: TLabel
           Left = 8
-          Height = 17
+          Height = 22
           Top = 57
-          Width = 145
+          Width = 156
           Caption = 'String de Inicialização'
         end
         object ckEsperaCon: TCheckBox
           Left = 411
-          Height = 23
+          Height = 26
           Top = 0
-          Width = 133
+          Width = 142
           Caption = 'Espera Conexão'
           TabOrder = 3
         end
         object Label23: TLabel
           Left = 285
-          Height = 17
+          Height = 22
           Top = 56
-          Width = 109
+          Width = 116
           Caption = 'Tempo de Delay:'
         end
         object edDelay: TEdit
           Left = 286
-          Height = 33
-          Top = 72
+          Height = 32
+          Top = 77
           Width = 80
           TabOrder = 4
           Text = '10'
         end
         object ckExecuta: TCheckBox
           Left = 408
-          Height = 23
+          Height = 26
           Top = 32
-          Width = 145
+          Width = 155
           Caption = 'Conecta ao Iniciar'
           TabOrder = 5
         end
@@ -393,14 +393,14 @@ object frmmain: Tfrmmain
         Top = 119
         Width = 304
         Caption = 'Ponte TCP'
-        ClientHeight = 119
+        ClientHeight = 114
         ClientWidth = 302
         TabOrder = 3
         object ckServidor: TCheckBox
           Left = 8
-          Height = 23
+          Height = 26
           Top = 4
-          Width = 122
+          Width = 132
           Caption = 'Responde TCP'
           Checked = True
           State = cbChecked
@@ -408,15 +408,15 @@ object frmmain: Tfrmmain
         end
         object Label19: TLabel
           Left = 8
-          Height = 17
+          Height = 22
           Top = 32
-          Width = 34
+          Width = 32
           Caption = 'Port:'
         end
         object edTCPPORT1: TEdit
           Left = 10
-          Height = 33
-          Top = 48
+          Height = 32
+          Top = 53
           Width = 80
           TabOrder = 1
           Text = '8088'
@@ -444,7 +444,7 @@ object frmmain: Tfrmmain
         Top = 0
         Width = 305
         Caption = 'Serial Connecting'
-        ClientHeight = 94
+        ClientHeight = 89
         ClientWidth = 303
         TabOrder = 4
         object btConnect: TBitBtn
@@ -456,10 +456,10 @@ object frmmain: Tfrmmain
           TabOrder = 0
         end
         object btFeedbackserial: TButton
-          Left = 112
+          Left = 98
           Height = 32
           Top = 40
-          Width = 101
+          Width = 144
           Caption = 'Feed Back Serial'
           TabOrder = 1
         end
@@ -475,20 +475,20 @@ object frmmain: Tfrmmain
     end
     object tbSerial: TTabSheet
       Caption = 'Serial'
-      ClientHeight = 502
+      ClientHeight = 513
       ClientWidth = 599
       object edEnviar: TEdit
         Left = 8
-        Height = 33
+        Height = 32
         Top = 418
         Width = 425
         TabOrder = 0
       end
       object Label2: TLabel
         Left = 8
-        Height = 17
+        Height = 22
         Top = 392
-        Width = 67
+        Width = 70
         Caption = 'Send Info:'
       end
       object btEnviar: TButton
@@ -518,11 +518,11 @@ object frmmain: Tfrmmain
         TabOrder = 3
         object TabSheet1: TTabSheet
           Caption = 'ASCII'
-          ClientHeight = 345
+          ClientHeight = 328
           ClientWidth = 589
           inline Memo1: TSynEdit
             Left = 0
-            Height = 345
+            Height = 328
             Top = 0
             Width = 589
             Align = alClient
@@ -1019,11 +1019,11 @@ object frmmain: Tfrmmain
         end
         object TabSheet2: TTabSheet
           Caption = 'Hexa'
-          ClientHeight = 345
+          ClientHeight = 328
           ClientWidth = 589
           inline Memo2: TSynEdit
             Left = 0
-            Height = 345
+            Height = 328
             Top = 0
             Width = 589
             Align = alClient
@@ -1520,11 +1520,11 @@ object frmmain: Tfrmmain
         end
         object TabSheet4: TTabSheet
           Caption = 'Texto'
-          ClientHeight = 345
+          ClientHeight = 328
           ClientWidth = 589
           inline Memo3: TSynEdit
             Left = 0
-            Height = 345
+            Height = 328
             Top = 0
             Width = 589
             Align = alClient
@@ -2023,7 +2023,7 @@ object frmmain: Tfrmmain
     end
     object tbSocket: TTabSheet
       Caption = 'TCP'
-      ClientHeight = 502
+      ClientHeight = 513
       ClientWidth = 599
       object cbTipo1: TPageControl
         Left = 0
@@ -2036,11 +2036,11 @@ object frmmain: Tfrmmain
         TabOrder = 0
         object TabSheet5: TTabSheet
           Caption = 'ASCII'
-          ClientHeight = 345
+          ClientHeight = 328
           ClientWidth = 589
           inline Memo4: TSynEdit
             Left = 0
-            Height = 345
+            Height = 328
             Top = 0
             Width = 589
             Align = alClient
@@ -2537,11 +2537,11 @@ object frmmain: Tfrmmain
         end
         object TabSheet6: TTabSheet
           Caption = 'Hexa'
-          ClientHeight = 345
+          ClientHeight = 328
           ClientWidth = 589
           inline Memo5: TSynEdit
             Left = 0
-            Height = 345
+            Height = 328
             Top = 0
             Width = 589
             Align = alClient
@@ -3038,11 +3038,11 @@ object frmmain: Tfrmmain
         end
         object TabSheet7: TTabSheet
           Caption = 'Texto'
-          ClientHeight = 345
+          ClientHeight = 328
           ClientWidth = 589
           inline Memo6: TSynEdit
             Left = 0
-            Height = 345
+            Height = 328
             Top = 0
             Width = 589
             Align = alClient
@@ -3541,28 +3541,28 @@ object frmmain: Tfrmmain
     end
     object tbProgrammer: TTabSheet
       Caption = 'Programmer'
-      ClientHeight = 502
+      ClientHeight = 513
       ClientWidth = 599
       object Label14: TLabel
         Left = 176
-        Height = 17
+        Height = 22
         Top = 24
-        Width = 71
+        Width = 74
         Caption = 'Action ms:'
         Color = clForm
         Transparent = False
       end
       object ckTimmer: TCheckBox
         Left = 16
-        Height = 23
+        Height = 26
         Top = 24
-        Width = 167
+        Width = 174
         Caption = 'Timmer Programmer'
         TabOrder = 0
       end
       object edTimmer: TEdit
         Left = 241
-        Height = 33
+        Height = 32
         Top = 22
         Width = 103
         TabOrder = 1
@@ -3570,22 +3570,22 @@ object frmmain: Tfrmmain
       end
       object Label15: TLabel
         Left = 16
-        Height = 17
+        Height = 22
         Top = 64
-        Width = 77
+        Width = 81
         Caption = 'File Source:'
       end
       object edSource: TEdit
-        Left = 89
-        Height = 33
-        Top = 63
+        Left = 16
+        Height = 32
+        Top = 88
         Width = 255
         TabOrder = 2
       end
       object ToggleBox1: TToggleBox
-        Left = 351
-        Height = 25
-        Top = 65
+        Left = 272
+        Height = 27
+        Top = 90
         Width = 75
         Caption = 'Open'
         TabOrder = 3
@@ -3593,11 +3593,11 @@ object frmmain: Tfrmmain
     end
     object tsSource: TTabSheet
       Caption = 'Source'
-      ClientHeight = 502
+      ClientHeight = 513
       ClientWidth = 599
       inline synSource: TSynEdit
         Left = 0
-        Height = 502
+        Height = 513
         Top = 0
         Width = 599
         Align = alClient
@@ -4096,9 +4096,9 @@ object frmmain: Tfrmmain
   end
   object Label16: TLabel
     Left = 398
-    Height = 17
+    Height = 22
     Top = 128
-    Width = 144
+    Width = 153
     Caption = 'Hexadecimal blocado'
   end
   object SdpoSerial1: TSdpoSerial
@@ -7103,7 +7103,7 @@ object frmmain: Tfrmmain
     Port = 8088
     Timeout = 0
     ReuseAddress = False
-    Left = 400
-    Top = 192
+    Left = 240
+    Top = 128
   end
 end

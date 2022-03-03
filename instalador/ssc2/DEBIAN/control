@@ -1,6 +1,6 @@
 Package: ssc2
 Version: 2.4
-Depends:  libcanberra-gtk-module , libcanberra-gtk3-module, mysql-client
+Depends:  libcanberra-gtk-module , libcanberra-gtk3-module
 Section: custom
 Priority: optional
 Architecture: all
