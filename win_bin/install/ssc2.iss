@@ -33,8 +33,7 @@ Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortugue
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "D:\projetos\maurinsoft\SSC\src\ssc.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\projetos\maurinsoft\SSC\src\ssc.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\projetos\maurinsoft\SSC\ssc.exe"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
