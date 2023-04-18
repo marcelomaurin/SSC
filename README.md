@@ -5,7 +5,7 @@ Software Serial Communication
 Programa de teste e comunicação serial/USB. Permite o acesso a dispositivos Seriais usando TCP, ou em modo bridge usando arduino como escravo.
 
 ## Site do Projeto em Portugues
-<a href="http://maurinsoft.com.br/index.php/projetos-open-source/projeto-ssc/">Software do Projeto</a>
+<a href="https://maurinsoft.com.br/index.php/projetos-open-source/projeto-ssc/">Software do Projeto</a>
 
 # Spanish
 
