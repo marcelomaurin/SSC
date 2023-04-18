@@ -6,100 +6,108 @@ object frmmain: Tfrmmain
   Width = 609
   BorderStyle = bsDialog
   Caption = 'Software Serial Communication'
-  ClientHeight = 488
+  ClientHeight = 493
   ClientWidth = 609
   Menu = MainMenu1
   OnClose = FormClose
   OnCreate = FormCreate
   ParentBiDiMode = False
   Position = poMainFormCenter
-  LCLVersion = '2.2.0.4'
+  LCLVersion = '2.0.12.0'
   object PageControl1: TPageControl
     Left = 0
-    Height = 488
+    Height = 493
     Top = 0
     Width = 609
-    ActivePage = tbSobre
+    ActivePage = tbConfig
     Align = alClient
     DockSite = True
     ParentBiDiMode = False
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     object tbSobre: TTabSheet
       BiDiMode = bdRightToLeft
       Caption = 'About'
-      ClientHeight = 457
-      ClientWidth = 599
+      ClientHeight = 465
+      ClientWidth = 601
       ParentBiDiMode = False
       object Label6: TLabel
         Left = 120
-        Height = 25
+        Height = 18
         Top = 48
-        Width = 377
+        Width = 290
         Caption = 'Software Serial Communication'
         Font.CharSet = OEM_CHARSET
         Font.Height = -21
         Font.Name = 'Terminal'
         Font.Pitch = fpFixed
         Font.Quality = fqDraft
+        ParentColor = False
         ParentFont = False
       end
       object Label7: TLabel
         Left = 176
-        Height = 17
+        Height = 15
         Top = 128
-        Width = 250
+        Width = 197
         Caption = 'Developer to Marcelo Maurin Martins'
+        ParentColor = False
       end
       object Label8: TLabel
         Left = 232
-        Height = 17
+        Height = 15
         Top = 240
-        Width = 70
+        Width = 53
         Caption = '2019/2022'
         Color = clForm
+        ParentColor = False
         Transparent = False
       end
       object Label3: TLabel
         Left = 160
-        Height = 17
+        Height = 15
         Top = 304
-        Width = 238
+        Width = 189
         Caption = 'marcelomaurinmartins@gmail.com'
+        ParentColor = False
       end
       object Label12: TLabel
         Left = 192
-        Height = 17
+        Height = 15
         Top = 280
-        Width = 145
+        Width = 114
         Caption = 'Send me feedback to:'
+        ParentColor = False
       end
       object Label13: TLabel
         Left = 232
-        Height = 17
+        Height = 15
         Top = 192
-        Width = 86
+        Width = 65
         Caption = 'Version 2.4.2'
         Color = clForm
+        ParentColor = False
         Transparent = False
       end
       object Label22: TLabel
         Left = 192
-        Height = 17
+        Height = 15
         Top = 152
-        Width = 172
+        Width = 134
         Caption = 'http://maurinsoft.com.br'
+        ParentColor = False
       end
     end
     object tbConfig: TTabSheet
       Caption = 'Config'
-      ClientHeight = 457
-      ClientWidth = 599
+      ClientHeight = 465
+      ClientWidth = 601
       object Label17: TLabel
         Left = 24
         Height = 1
         Top = 245
         Width = 1
+        ParentColor = False
       end
       object GroupBox1: TGroupBox
         Left = 8
@@ -107,19 +115,20 @@ object frmmain: Tfrmmain
         Top = 0
         Width = 264
         Caption = 'Serial'
-        ClientHeight = 214
-        ClientWidth = 262
+        ClientHeight = 212
+        ClientWidth = 260
         TabOrder = 0
         object Label1: TLabel
           Left = 10
-          Height = 17
+          Height = 15
           Top = 0
-          Width = 34
+          Width = 25
           Caption = 'Port:'
+          ParentColor = False
         end
         object edPort: TEdit
           Left = 8
-          Height = 33
+          Height = 23
           Top = 16
           Width = 192
           TabOrder = 0
@@ -127,17 +136,18 @@ object frmmain: Tfrmmain
         end
         object Label4: TLabel
           Left = 10
-          Height = 17
+          Height = 15
           Top = 40
-          Width = 55
+          Width = 41
           Caption = 'Databit:'
+          ParentColor = False
         end
         object cbDatabit: TComboBox
           Left = 8
-          Height = 33
+          Height = 23
           Top = 56
           Width = 192
-          ItemHeight = 0
+          ItemHeight = 15
           ItemIndex = 0
           Items.Strings = (
             '8'
@@ -150,17 +160,18 @@ object frmmain: Tfrmmain
         end
         object Label5: TLabel
           Left = 8
-          Height = 17
+          Height = 15
           Top = 80
-          Width = 66
+          Width = 50
           Caption = 'Baudrate:'
+          ParentColor = False
         end
         object cbBaudrate: TComboBox
           Left = 8
-          Height = 33
+          Height = 23
           Top = 96
           Width = 192
-          ItemHeight = 0
+          ItemHeight = 15
           ItemIndex = 3
           Items.Strings = (
             'br___300'
@@ -182,17 +193,18 @@ object frmmain: Tfrmmain
         end
         object Label9: TLabel
           Left = 9
-          Height = 17
+          Height = 15
           Top = 123
-          Width = 65
+          Width = 49
           Caption = 'Paridade:'
+          ParentColor = False
         end
         object cbParidade: TComboBox
           Left = 8
-          Height = 33
+          Height = 23
           Top = 137
           Width = 191
-          ItemHeight = 0
+          ItemHeight = 15
           ItemIndex = 0
           Items.Strings = (
             'N'
@@ -206,17 +218,18 @@ object frmmain: Tfrmmain
         end
         object Label10: TLabel
           Left = 10
-          Height = 17
+          Height = 15
           Top = 161
-          Width = 58
+          Width = 44
           Caption = 'Stop Bit:'
+          ParentColor = False
         end
         object cbStopbit: TComboBox
           Left = 8
-          Height = 33
+          Height = 23
           Top = 176
           Width = 192
-          ItemHeight = 0
+          ItemHeight = 15
           ItemIndex = 0
           Items.Strings = (
             'Stop 1'
@@ -232,19 +245,20 @@ object frmmain: Tfrmmain
         Top = 232
         Width = 576
         Caption = 'TCP Arduino Client'
-        ClientHeight = 94
-        ClientWidth = 574
+        ClientHeight = 92
+        ClientWidth = 572
         TabOrder = 1
         object Label18: TLabel
           Left = 16
-          Height = 17
+          Height = 15
           Top = 48
-          Width = 40
+          Width = 33
           Caption = 'HOST:'
+          ParentColor = False
         end
         object edHost: TEdit
           Left = 16
-          Height = 33
+          Height = 23
           Top = 64
           Width = 112
           TabOrder = 0
@@ -284,9 +298,9 @@ object frmmain: Tfrmmain
         end
         object ckEscuta: TCheckBox
           Left = 16
-          Height = 23
+          Height = 19
           Top = 16
-          Width = 249
+          Width = 195
           Caption = 'Habilita Recepção Serial pela TCP'
           Checked = True
           State = cbChecked
@@ -294,7 +308,7 @@ object frmmain: Tfrmmain
         end
         object edTCPPORT: TEdit
           Left = 146
-          Height = 33
+          Height = 23
           Top = 64
           Width = 80
           TabOrder = 6
@@ -302,10 +316,11 @@ object frmmain: Tfrmmain
         end
         object Label11: TLabel
           Left = 144
-          Height = 17
+          Height = 15
           Top = 48
-          Width = 34
+          Width = 25
           Caption = 'Port:'
+          ParentColor = False
         end
       end
       object GroupBox3: TGroupBox
@@ -314,20 +329,20 @@ object frmmain: Tfrmmain
         Top = 344
         Width = 584
         Caption = 'Parametros'
-        ClientHeight = 87
-        ClientWidth = 582
+        ClientHeight = 85
+        ClientWidth = 580
         TabOrder = 2
         object ckBlocado: TCheckBox
           Left = 8
-          Height = 23
+          Height = 19
           Top = 0
-          Width = 120
+          Width = 95
           Caption = 'Envio Blocado'
           TabOrder = 0
         end
         object edHexBloc: TEdit
           Left = 104
-          Height = 33
+          Height = 23
           Top = 16
           Width = 144
           TabOrder = 1
@@ -335,7 +350,7 @@ object frmmain: Tfrmmain
         end
         object edStart: TEdit
           Left = 8
-          Height = 33
+          Height = 23
           Top = 56
           Width = 240
           TabOrder = 2
@@ -343,36 +358,39 @@ object frmmain: Tfrmmain
         end
         object Label20: TLabel
           Left = 103
-          Height = 17
+          Height = 15
           Top = 0
-          Width = 117
+          Width = 94
           Caption = 'Bloco Hexa String'
+          ParentColor = False
         end
         object Label21: TLabel
           Left = 8
-          Height = 17
+          Height = 15
           Top = 40
-          Width = 145
+          Width = 114
           Caption = 'String de Inicialização'
+          ParentColor = False
         end
         object ckEsperaCon: TCheckBox
           Left = 279
-          Height = 23
+          Height = 19
           Top = 0
-          Width = 133
+          Width = 104
           Caption = 'Espera Conexão'
           TabOrder = 3
         end
         object Label23: TLabel
           Left = 285
-          Height = 17
+          Height = 15
           Top = 24
-          Width = 109
+          Width = 87
           Caption = 'Tempo de Delay:'
+          ParentColor = False
         end
         object edDelay: TEdit
           Left = 286
-          Height = 33
+          Height = 23
           Top = 40
           Width = 80
           TabOrder = 4
@@ -380,9 +398,9 @@ object frmmain: Tfrmmain
         end
         object ckExecuta: TCheckBox
           Left = 408
-          Height = 23
+          Height = 19
           Top = 0
-          Width = 145
+          Width = 115
           Caption = 'Conecta ao Iniciar'
           TabOrder = 5
         end
@@ -393,14 +411,14 @@ object frmmain: Tfrmmain
         Top = 119
         Width = 304
         Caption = 'Ponte TCP'
-        ClientHeight = 95
-        ClientWidth = 302
+        ClientHeight = 93
+        ClientWidth = 300
         TabOrder = 3
         object ckServidor: TCheckBox
           Left = 8
-          Height = 23
+          Height = 19
           Top = 4
-          Width = 122
+          Width = 96
           Caption = 'Responde TCP'
           Checked = True
           State = cbChecked
@@ -408,14 +426,15 @@ object frmmain: Tfrmmain
         end
         object Label19: TLabel
           Left = 8
-          Height = 17
+          Height = 15
           Top = 32
-          Width = 34
+          Width = 25
           Caption = 'Port:'
+          ParentColor = False
         end
         object edTCPPORT1: TEdit
           Left = 10
-          Height = 33
+          Height = 23
           Top = 48
           Width = 80
           TabOrder = 1
@@ -444,8 +463,8 @@ object frmmain: Tfrmmain
         Top = 0
         Width = 305
         Caption = 'Serial Connecting'
-        ClientHeight = 94
-        ClientWidth = 303
+        ClientHeight = 92
+        ClientWidth = 301
         TabOrder = 4
         object btConnect: TBitBtn
           Left = 7
@@ -490,6 +509,7 @@ object frmmain: Tfrmmain
         Top = 392
         Width = 67
         Caption = 'Send Info:'
+        ParentColor = False
       end
       object btEnviar: TButton
         Left = 437
@@ -533,7 +553,7 @@ object frmmain: Tfrmmain
             ParentColor = False
             ParentFont = False
             TabOrder = 0
-            Gutter.Width = 57
+            Gutter.Width = 53
             Gutter.MouseActions = <>
             RightGutter.Width = 0
             RightGutter.MouseActions = <>
@@ -986,7 +1006,7 @@ object frmmain: Tfrmmain
                 MouseActions = <>
               end
               object SynGutterLineNumber1: TSynGutterLineNumber
-                Width = 17
+                Width = 13
                 MouseActions = <>
                 MarkupInfo.Background = clBtnFace
                 MarkupInfo.Foreground = clNone
@@ -1034,7 +1054,7 @@ object frmmain: Tfrmmain
             ParentColor = False
             ParentFont = False
             TabOrder = 0
-            Gutter.Width = 57
+            Gutter.Width = 53
             Gutter.MouseActions = <>
             RightGutter.Width = 0
             RightGutter.MouseActions = <>
@@ -1487,7 +1507,7 @@ object frmmain: Tfrmmain
                 MouseActions = <>
               end
               object SynGutterLineNumber1: TSynGutterLineNumber
-                Width = 17
+                Width = 13
                 MouseActions = <>
                 MarkupInfo.Background = clBtnFace
                 MarkupInfo.Foreground = clNone
@@ -1535,7 +1555,7 @@ object frmmain: Tfrmmain
             ParentColor = False
             ParentFont = False
             TabOrder = 0
-            Gutter.Width = 57
+            Gutter.Width = 53
             Gutter.MouseActions = <>
             RightGutter.Width = 0
             RightGutter.MouseActions = <>
@@ -1988,7 +2008,7 @@ object frmmain: Tfrmmain
                 MouseActions = <>
               end
               object SynGutterLineNumber1: TSynGutterLineNumber
-                Width = 17
+                Width = 13
                 MouseActions = <>
                 MarkupInfo.Background = clBtnFace
                 MarkupInfo.Foreground = clNone
@@ -2051,7 +2071,7 @@ object frmmain: Tfrmmain
             ParentColor = False
             ParentFont = False
             TabOrder = 0
-            Gutter.Width = 57
+            Gutter.Width = 53
             Gutter.MouseActions = <>
             RightGutter.Width = 0
             RightGutter.MouseActions = <>
@@ -2504,7 +2524,7 @@ object frmmain: Tfrmmain
                 MouseActions = <>
               end
               object SynGutterLineNumber1: TSynGutterLineNumber
-                Width = 17
+                Width = 13
                 MouseActions = <>
                 MarkupInfo.Background = clBtnFace
                 MarkupInfo.Foreground = clNone
@@ -2552,7 +2572,7 @@ object frmmain: Tfrmmain
             ParentColor = False
             ParentFont = False
             TabOrder = 0
-            Gutter.Width = 57
+            Gutter.Width = 53
             Gutter.MouseActions = <>
             RightGutter.Width = 0
             RightGutter.MouseActions = <>
@@ -3005,7 +3025,7 @@ object frmmain: Tfrmmain
                 MouseActions = <>
               end
               object SynGutterLineNumber1: TSynGutterLineNumber
-                Width = 17
+                Width = 13
                 MouseActions = <>
                 MarkupInfo.Background = clBtnFace
                 MarkupInfo.Foreground = clNone
@@ -3053,7 +3073,7 @@ object frmmain: Tfrmmain
             ParentColor = False
             ParentFont = False
             TabOrder = 0
-            Gutter.Width = 57
+            Gutter.Width = 53
             Gutter.MouseActions = <>
             RightGutter.Width = 0
             RightGutter.MouseActions = <>
@@ -3506,7 +3526,7 @@ object frmmain: Tfrmmain
                 MouseActions = <>
               end
               object SynGutterLineNumber1: TSynGutterLineNumber
-                Width = 17
+                Width = 13
                 MouseActions = <>
                 MarkupInfo.Background = clBtnFace
                 MarkupInfo.Foreground = clNone
@@ -3550,6 +3570,7 @@ object frmmain: Tfrmmain
         Width = 71
         Caption = 'Action ms:'
         Color = clForm
+        ParentColor = False
         Transparent = False
       end
       object ckTimmer: TCheckBox
@@ -3574,6 +3595,7 @@ object frmmain: Tfrmmain
         Top = 64
         Width = 77
         Caption = 'File Source:'
+        ParentColor = False
       end
       object edSource: TEdit
         Left = 89
@@ -4096,10 +4118,11 @@ object frmmain: Tfrmmain
   end
   object Label16: TLabel
     Left = 398
-    Height = 17
+    Height = 15
     Top = 128
-    Width = 144
+    Width = 115
     Caption = 'Hexadecimal blocado'
+    ParentColor = False
   end
   object SdpoSerial1: TSdpoSerial
     Active = False

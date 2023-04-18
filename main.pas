@@ -23,8 +23,8 @@ type
     btConnectSRV: TBitBtn;
     btDisconnect: TBitBtn;
     btDisconnectSRV: TBitBtn;
-    btEnviar: TButton;
     btEnter: TButton;
+    btEnviar: TButton;
     btFeedbackserial: TButton;
     Button1: TButton;
     Button2: TButton;
@@ -41,10 +41,10 @@ type
     ckBlocado: TCheckBox;
     ckTimmer: TCheckBox;
     edEnviar: TEdit;
+    edPort: TComboBox;
     edHexBloc: TEdit;
     edHost: TEdit;
     edDelay: TEdit;
-    edPort: TEdit;
     edSource: TEdit;
     edStart: TEdit;
     edTCPPORT: TEdit;
@@ -66,12 +66,12 @@ type
     Label17: TLabel;
     Label18: TLabel;
     Label19: TLabel;
+    Label2: TLabel;
     Label20: TLabel;
     Label21: TLabel;
     Label22: TLabel;
     Label23: TLabel;
     Label3: TLabel;
-    Label2: TLabel;
     Label4: TLabel;
     Label5: TLabel;
     Label6: TLabel;
@@ -99,6 +99,7 @@ type
     OpenDialog1: TOpenDialog;
     PageControl1: TPageControl;
     cbTipo: TPageControl;
+    Panel1: TPanel;
     pmtray: TPopupMenu;
     SaveDialog1: TSaveDialog;
     SaveDialog2: TSaveDialog;
@@ -295,6 +296,9 @@ end;
 procedure Tfrmmain.btConnectClick(Sender: TObject);
 begin
    ConectaSerial();
+   PageControl1.ActivePage := tbSerial;
+
+
 end;
 
 procedure Tfrmmain.EscutaTCP();
@@ -363,6 +367,7 @@ end;
 procedure Tfrmmain.btDisconnectClick(Sender: TObject);
 begin
   SdpoSerial1.Close;
+  SdpoSerial1.Active:= false;
   if LTCPComponent1.Connected then
   begin
     LTCPComponent1.Disconnect(true);
@@ -649,6 +654,7 @@ begin
   self.top:=FSetssc.posy;
   PageControl1.ActivePageIndex := 0;
   edPort.text := FSetssc.COMPORT;
+  edPort.Items:= GetSerialPorts();
   cbBaudrate.ItemIndex:= FSetssc.BAUDRATE;
   cbDatabit.ItemIndex:= FSetssc.DATABIT;
   cbStopbit.ItemIndex:= FSetssc.STOPBIT;
