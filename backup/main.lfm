@@ -2013,7 +2013,6 @@ object frmmain: Tfrmmain
         Width = 839
         Align = alBottom
         Anchors = [akLeft, akBottom]
-        Caption = 'Panel1'
         ClientHeight = 89
         ClientWidth = 839
         TabOrder = 1

@@ -18,11 +18,11 @@ object frmmain: Tfrmmain
     Height = 575
     Top = 0
     Width = 847
-    ActivePage = tbSerial
+    ActivePage = tbSobre
     Align = alClient
     DockSite = True
     ParentBiDiMode = False
-    TabIndex = 2
+    TabIndex = 0
     TabOrder = 0
     object tbSobre: TTabSheet
       BiDiMode = bdRightToLeft
@@ -57,7 +57,7 @@ object frmmain: Tfrmmain
         Height = 15
         Top = 240
         Width = 53
-        Caption = '2019/2022'
+        Caption = '2019/2023'
         Color = clForm
         ParentColor = False
         Transparent = False

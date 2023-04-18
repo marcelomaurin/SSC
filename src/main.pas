@@ -183,7 +183,6 @@ type
     procedure RegistraTCP(tipo: string; Info : string);
     procedure EscutaTCP();
   private
-
     { private declarations }
     blocolinha : integer;
     blocolinhaTCP : integer;
@@ -193,8 +192,8 @@ type
     //FNet: TLConnection;
     FIsServer: Boolean;
 
-    procedure  AtivaTCP();
     procedure ConectaSerial();
+    procedure  AtivaTCP();
     {$IFDEF WINDOWS}
     procedure ChamaWindows();
     procedure AudioWindows();
@@ -202,7 +201,6 @@ type
     {$IFDEF LINUX}
     procedure ChamaLinux();
     procedure AudioLinux();
-
     {$ENDIF}
     function strtohex(info : string) : string;
     function hextostr(info: string): string;
@@ -246,7 +244,7 @@ end;
 
 procedure  Tfrmmain.AtivaTCP();
 begin
-    if(LTCPComponent1.Connected) then
+    if   LTCPComponent1.Connected then
     begin
         LTCPComponent1.Disconnect(true);
         Application.ProcessMessages;

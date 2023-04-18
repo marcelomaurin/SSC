@@ -2,9 +2,9 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "SSC2"
-#define MyAppVersion "2.4.2"
+#define MyAppVersion "2.5"
 #define MyAppPublisher "Maurinsoft"
-#define MyAppURL "http://maurinsoft.com.br"
+#define MyAppURL "https://maurinsoft.com.br"
 #define MyAppExeName "ssc.exe"
 
 [Setup]
