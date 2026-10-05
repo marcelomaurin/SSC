@@ -1,7 +1,3 @@
-//Objetivo construir os parametros de setup da classe principal
-//Criado por Marcelo Maurin Martins
-//Data:18/08/2019
-
 unit setssc;
 
 {$mode objfpc}{$H+}
@@ -9,233 +5,119 @@ unit setssc;
 interface
 
 uses
-  Classes, SysUtils, funcoes;
-
-const filename = 'ssc.cfg';
-
+  Classes, SysUtils, IniFiles;
 
 type
-  { TfrmMenu }
-
-  { TSetssc }
-
-  TSetssc = class(TObject)
-    constructor create();
-    destructor destroy();
+  TSetSSC = class
   private
-        arquivo :Tstringlist;
-        ckdevice : boolean;
-        FPATH : string;
-        FPosX : integer;
-        FPosY : integer;
-        FHide : boolean;
-        FEXEC : boolean;
-        FCOM  : string;
-        FBAUD : integer;
-        FDTBIT : integer;
-        FPARI : integer;
-        FSTBIT : integer;
-
-        procedure Default();
-        procedure SetPOSX(value : integer);
-        procedure SetPOSY(value : integer);
-        procedure SetDevice(const Value : Boolean);
-        procedure SetHide(value : boolean);
-        procedure SetEXEC(value : boolean);
-        procedure SetCOM(value : string);
-        procedure SetBAUD(value : integer);
-        procedure SetDTBIT(value : integer);
-        procedure SetPARI(value : integer);
-        procedure SetSTBIT(value : integer);
-
+    FConfigPath: string;
+    FPort: string;
+    FBaudIndex: Integer;
+    FDataBitsIndex: Integer;
+    FParityIndex: Integer;
+    FStopBitsIndex: Integer;
+    FPosX: Integer;
+    FPosY: Integer;
+    FWidth: Integer;
+    FHeight: Integer;
+    procedure SetDefaults;
   public
-        procedure SalvaContexto();
-        Procedure CarregaContexto();
-        property device : boolean read ckdevice write SetDevice;
-        property posx : integer read FPosX write SetPOSX;
-        property posy : integer read FPosY write SetPOSY;
-        property Hide : boolean read FHide write SetHide;
-        property EXEC : boolean read FEXEC write SetEXEC;
-        property COMPORT : string read FCOM write SetCOM;
-        property BAUDRATE :integer read FBAUD write SetBAUD;
-        property DATABIT :integer read FDTBIT write SetDTBIT;
-        property PARIDADE :integer read FPARI write SetPARI;
-        property STOPBIT :integer read FSTBIT write SetSTBIT;
-  end;
+    constructor Create;
+    procedure Load;
+    procedure Save;
 
-  var
-    FSetssc : TSetssc;
+    property COMPORT: string read FPort write FPort;
+    property BAUDRATE: Integer read FBaudIndex write FBaudIndex;
+    property DATABIT: Integer read FDataBitsIndex write FDataBitsIndex;
+    property PARIDADE: Integer read FParityIndex write FParityIndex;
+    property STOPBIT: Integer read FStopBitsIndex write FStopBitsIndex;
+    property PosX: Integer read FPosX write FPosX;
+    property PosY: Integer read FPosY write FPosY;
+    property WindowWidth: Integer read FWidth write FWidth;
+    property WindowHeight: Integer read FHeight write FHeight;
+  end;
 
 implementation
 
-procedure TSetssc.SetPOSX(value : integer);
+procedure TSetSSC.SetDefaults;
 begin
-    Fposx := value;
+  FPort := '';
+  FBaudIndex := 5;      { 9600 }
+  FDataBitsIndex := 0;  { 8 bits }
+  FParityIndex := 0;    { none }
+  FStopBitsIndex := 0;  { 1 stop bit }
+  FPosX := -1;
+  FPosY := -1;
+  FWidth := 1100;
+  FHeight := 700;
 end;
 
-procedure TSetssc.SetPOSY(value : integer);
-begin
-    FposY := value;
-end;
-
-
-procedure TSetssc.SetDevice(const Value : Boolean);
-begin
-  ckdevice := Value;
-end;
-
-procedure TSetssc.SetHide(value : boolean);
-begin
-    FHide := value;
-end;
-
-procedure TSetssc.SetEXEC(value : boolean);
-begin
-    FEXEC := value;
-end;
-
-procedure TSetssc.SetCOM(value: string);
-begin
-  FCOM := value;
-end;
-
-procedure TSetssc.SetBAUD(value: integer);
-begin
-  FBAUD := value;
-end;
-
-procedure TSetssc.SetDTBIT(value: integer);
-begin
-  FDTBIT := value;
-end;
-
-procedure TSetssc.SetPARI(value: integer);
-begin
-  FPARI := value;
-end;
-
-procedure TSetssc.SetSTBIT(value: integer);
-begin
-  FSTBIT := value;
-end;
-
-
-//Valores default do codigo
-procedure TSetssc.Default();
-begin
-    ckdevice := false;
-    FEXEC := false;
-    FHide:= false;
-    {$IFDEF LINUX}
-    FCOM := '/dev/ttyS0';
-    {$ENDIF}
-    {$IFDEF WINDOWS}
-    FCOM :='COM13';
-    {$ENDIF}
-    FBAUD := 3; (* 2400 *)
-    FDTBIT := 0; (* data bit 8 *)
-    FPARI := 0;  (* Pari N *)
-    FSTBIT := 0; (* STOP bit 1 *)
-end;
-
-procedure TSetssc.CarregaContexto();
+constructor TSetSSC.Create;
 var
-  posicao: integer;
+  ConfigDir: string;
 begin
-    if  BuscaChave(arquivo,'DEVICE:',posicao) then
-    begin
-      device := (RetiraInfo(arquivo.Strings[posicao])='1');
-    end;
-    if  BuscaChave(arquivo,'POSX:',posicao) then
-    begin
-      FPOSX := strtoint(RetiraInfo(arquivo.Strings[posicao]));
-    end;
-    if  BuscaChave(arquivo,'POSY:',posicao) then
-    begin
-      FPOSY := strtoint(RetiraInfo(arquivo.Strings[posicao]));
-    end;
-    if  BuscaChave(arquivo,'HIDE:',posicao) then
-    begin
-      FHide := StrToBool(RetiraInfo(arquivo.Strings[posicao]));
-    end;
-    if  BuscaChave(arquivo,'EXEC:',posicao) then
-    begin
-      FEXEC := strtoBool(RetiraInfo(arquivo.Strings[posicao]));
-    end;
-    if  BuscaChave(arquivo,'COMPORT:',posicao) then
-    begin
-      FCOM := RetiraInfo(arquivo.Strings[posicao]);
-    end;
-    if  BuscaChave(arquivo,'BAUDRATE:',posicao) then
-    begin
-      FBAUD := strtoint(RetiraInfo(arquivo.Strings[posicao]));
-    end;
-    if  BuscaChave(arquivo,'DATABIT:',posicao) then
-    begin
-      FDTBIT := strtoint(RetiraInfo(arquivo.Strings[posicao]));
-    end;
-    if  BuscaChave(arquivo,'PARIDADE:',posicao) then
-    begin
-      FPARI := strtoint(RetiraInfo(arquivo.Strings[posicao]));
-    end;
-    if  BuscaChave(arquivo,'STOPBIT:',posicao) then
-    begin
-      FSTBIT := strtoint(RetiraInfo(arquivo.Strings[posicao]));
-    end;
+  inherited Create;
+  SetDefaults;
+
+  ConfigDir := GetAppConfigDir(False);
+  if not DirectoryExists(ConfigDir) then
+    ForceDirectories(ConfigDir);
+
+  FConfigPath := IncludeTrailingPathDelimiter(ConfigDir) + 'ssc3.ini';
+  Load;
 end;
 
-//Metodo construtor
-constructor TSetssc.create();
+procedure TSetSSC.Load;
+var
+  Ini: TIniFile;
 begin
-  arquivo := TStringList.create();
-  {$IFDEF LINUX}
-   Fpath :=GetAppConfigDir(false);
-   if not(FileExists(FPATH)) then
-   begin
-      createdir(fpath);
-   end;
-  {$ENDIF}
-  {$IFDEF WINDOWS}
-      Fpath :=GetAppConfigDir(false);
-      if not(FileExists(FPATH)) then
-      begin
-         createdir(fpath);
-      end;
-  {$ENDIF}
+  if not FileExists(FConfigPath) then
+    Exit;
 
-  if (FileExists(fpath+filename)) then
-  begin
-    arquivo.LoadFromFile(fpath+filename);
-    CarregaContexto();
-  end
-  else
-  begin
-    default();
+  Ini := TIniFile.Create(FConfigPath);
+  try
+    FPort := Ini.ReadString('serial', 'port', FPort);
+    FBaudIndex := Ini.ReadInteger('serial', 'baud_index', FBaudIndex);
+    FDataBitsIndex := Ini.ReadInteger('serial', 'data_bits_index', FDataBitsIndex);
+    FParityIndex := Ini.ReadInteger('serial', 'parity_index', FParityIndex);
+    FStopBitsIndex := Ini.ReadInteger('serial', 'stop_bits_index', FStopBitsIndex);
+
+    FPosX := Ini.ReadInteger('window', 'left', FPosX);
+    FPosY := Ini.ReadInteger('window', 'top', FPosY);
+    FWidth := Ini.ReadInteger('window', 'width', FWidth);
+    FHeight := Ini.ReadInteger('window', 'height', FHeight);
+  finally
+    Ini.Free;
+  end;
+
+  if not (FBaudIndex in [0..12]) then FBaudIndex := 5;
+  if not (FDataBitsIndex in [0..3]) then FDataBitsIndex := 0;
+  if not (FParityIndex in [0..4]) then FParityIndex := 0;
+  if not (FStopBitsIndex in [0..1]) then FStopBitsIndex := 0;
+  if FWidth < 800 then FWidth := 1100;
+  if FHeight < 500 then FHeight := 700;
+end;
+
+procedure TSetSSC.Save;
+var
+  Ini: TIniFile;
+begin
+  Ini := TIniFile.Create(FConfigPath);
+  try
+    Ini.WriteString('serial', 'port', FPort);
+    Ini.WriteInteger('serial', 'baud_index', FBaudIndex);
+    Ini.WriteInteger('serial', 'data_bits_index', FDataBitsIndex);
+    Ini.WriteInteger('serial', 'parity_index', FParityIndex);
+    Ini.WriteInteger('serial', 'stop_bits_index', FStopBitsIndex);
+
+    Ini.WriteInteger('window', 'left', FPosX);
+    Ini.WriteInteger('window', 'top', FPosY);
+    Ini.WriteInteger('window', 'width', FWidth);
+    Ini.WriteInteger('window', 'height', FHeight);
+    Ini.UpdateFile;
+  finally
+    Ini.Free;
   end;
 end;
 
-
-procedure TSetssc.SalvaContexto();
-begin
-  arquivo.Clear;
-  arquivo.Append('DEVICE:'+iif(ckdevice,'1','0'));
-  arquivo.Append('POSX:'+inttostr(FPOSX));
-  arquivo.Append('POSY:'+inttostr(FPOSY));
-  arquivo.Append('HIDE:'+booltostr(FHide));
-  arquivo.Append('EXEC:'+booltostr(FEXEC));
-  arquivo.Append('COMPORT:'+FCOM);
-  arquivo.Append('BAUDRATE:'+ inttostr(FBAUD));
-  arquivo.Append('DATABIT:'+ inttostr(FDTBIT));
-  arquivo.Append('PARIDADE:'+ inttostr(FPARI));
-  arquivo.Append('STOPBIT:'+ inttostr(FSTBIT));
-  arquivo.SaveToFile(fpath+filename);
-end;
-
-destructor TSetssc.destroy();
-begin
-  SalvaContexto();
-  arquivo.free;
-end;
-
 end.
-
