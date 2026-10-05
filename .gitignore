@@ -64,3 +64,19 @@ __recovery/
 
 # Castalia statistics file (since XE7 Castalia is distributed with Delphi)
 *.stat
+
+
+# Free Pascal / Lazarus generated artifacts
+*.ppu
+*.compiled
+*.or
+*.bak
+*.lps
+
+# Build output directories
+/lib/
+/src/lib/
+/src/backup/
+
+# The maintained application source is under /src.
+# Release binaries stay under /bin and are versioned intentionally.
