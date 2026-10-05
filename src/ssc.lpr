@@ -6,8 +6,9 @@ uses
   {$IFDEF UNIX}{$IFDEF UseCThreads}
   cthreads,
   {$ENDIF}{$ENDIF}
-  Interfaces, // this includes the LCL widgetset
-  Forms, lnetvisual, main, sdposeriallaz, indylaz, hexlib, funcoes;
+  Interfaces,
+  Forms,
+  main;
 
 {$R *.res}
 
@@ -16,4 +17,3 @@ begin
   Application.CreateForm(Tfrmmain, frmmain);
   Application.Run;
 end.
-
