@@ -1,0 +1,139 @@
+name: Build SSC 3.0.0 installers
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'src/**'
+      - 'buildlinux.sh'
+      - 'win_bin/install/ssc3.iss'
+      - '.github/workflows/build-installers.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Lazarus and build tools
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y lazarus fpc fp-utils build-essential git python3 dpkg-dev libgtk2.0-dev
+          lazbuild --version
+          fpc -iV
+
+      - name: Prepare CHATGPT library
+        run: |
+          set -euo pipefail
+          git clone --depth 1 https://github.com/marcelomaurin/CHATGPT.git ../CHATGPT
+          cd ../CHATGPT
+          python3 installer/common/install_suite.py ci --profile all --lazbuild /usr/bin/lazbuild --dependency-dir "$RUNNER_TEMP/chatgpt-dependencies"
+
+      - name: Build SSC Linux
+        run: |
+          set -euo pipefail
+          lazbuild src/ssc.lpi
+          test -f src/ssc
+          chmod +x buildlinux.sh
+          ./buildlinux.sh
+          ls -lh bin/lin_bin/ssc3_3.0.0_*.deb
+
+      - name: Upload Linux installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: ssc-linux-installer
+          path: bin/lin_bin/ssc3_3.0.0_*.deb
+          if-no-files-found: error
+
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Lazarus, Git and Inno Setup
+        shell: pwsh
+        run: |
+          choco install lazarus git innosetup -y --no-progress
+          $laz = Get-Command lazbuild.exe -ErrorAction SilentlyContinue
+          if (-not $laz) {
+            $candidate = Get-ChildItem -Path C:\ -Filter lazbuild.exe -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+            if (-not $candidate) { throw 'lazbuild.exe not found' }
+            echo ('LAZBUILD=' + $candidate.FullName) >> $env:GITHUB_ENV
+          } else {
+            echo ('LAZBUILD=' + $laz.Source) >> $env:GITHUB_ENV
+          }
+
+      - name: Prepare CHATGPT library
+        shell: pwsh
+        run: |
+          git clone --depth 1 https://github.com/marcelomaurin/CHATGPT.git ..\CHATGPT
+          Set-Location ..\CHATGPT
+          python installer/common/install_suite.py ci --profile all --lazbuild "$env:LAZBUILD" --dependency-dir "$env:RUNNER_TEMP\chatgpt-dependencies"
+          if ($LASTEXITCODE -ne 0) { throw 'CHATGPT package installation failed' }
+
+      - name: Build SSC Windows
+        shell: pwsh
+        run: |
+          & "$env:LAZBUILD" src\ssc.lpi
+          if ($LASTEXITCODE -ne 0) { throw 'SSC build failed' }
+          if (!(Test-Path src\ssc.exe)) { throw 'src\ssc.exe not generated' }
+
+      - name: Build Inno Setup installer
+        shell: pwsh
+        run: |
+          $iscc = Get-Command ISCC.exe -ErrorAction SilentlyContinue
+          if (-not $iscc) {
+            $candidate = Get-ChildItem -Path 'C:\Program Files*' -Filter ISCC.exe -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
+            if (-not $candidate) { throw 'ISCC.exe not found' }
+            $isccPath = $candidate.FullName
+          } else {
+            $isccPath = $iscc.Source
+          }
+          & $isccPath win_bin\install\ssc3.iss
+          if ($LASTEXITCODE -ne 0) { throw 'Inno Setup build failed' }
+          if (!(Test-Path bin\win_X64\setup_3.0.0.exe)) { throw 'setup_3.0.0.exe not generated' }
+
+      - name: Upload Windows installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: ssc-windows-installer
+          path: bin/win_X64/setup_3.0.0.exe
+          if-no-files-found: error
+
+  publish:
+    needs: [linux, windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: ssc-linux-installer
+          path: bin/lin_bin
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: ssc-windows-installer
+          path: bin/win_X64
+
+      - name: Commit installers to master
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add bin/lin_bin/ssc3_3.0.0_*.deb bin/win_X64/setup_3.0.0.exe
+          if git diff --cached --quiet; then
+            echo 'Installers already up to date.'
+            exit 0
+          fi
+          git commit -m 'release: SSC 3.0.0 binary installers'
+          git push origin master

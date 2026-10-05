@@ -3,7 +3,7 @@ set -euo pipefail
 
 VERSION="3.0.0"
 APP="ssc3"
-ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 SRC_DIR="$ROOT_DIR/src"
 BUILD_DIR="$ROOT_DIR/.build/ssc3-deb"
 OUT_DIR="$ROOT_DIR/bin/lin_bin"
