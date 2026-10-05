@@ -32,26 +32,7 @@ jobs:
         run: |
           set -euo pipefail
           git clone --depth 1 https://github.com/marcelomaurin/CHATGPT.git ../CHATGPT
-          python3 - <<'PY'
-          from pathlib import Path
-          p = Path("src/ssc.lpi")
-          s = p.read_text(encoding="utf-8")
-          s = s.replace('''      <Item>
-        <PackageName Value="openai_input"/>
-      </Item>
-''', '')
-          s = s.replace('''      <Item>
-        <PackageName Value="openai_core"/>
-      </Item>
-''', '')
-          s = s.replace('''    <SearchPaths>
-      <IncludeFiles Value="$(ProjOutDir)"/>
-''', '''    <SearchPaths>
-      <OtherUnitFiles Value="../../CHATGPT/pacote;../../CHATGPT/pacote/AI;../../CHATGPT/pacote/AI Input/AISerial"/>
-      <IncludeFiles Value="$(ProjOutDir)"/>
-''')
-          p.write_text(s, encoding="utf-8")
-          PY
+          python3 .github/scripts/prepare_ssc_ci.py
 
       - name: Build SSC Linux
         run: |
@@ -92,26 +73,8 @@ jobs:
         shell: pwsh
         run: |
           git clone --depth 1 https://github.com/marcelomaurin/CHATGPT.git ..\CHATGPT
-          @'
-          from pathlib import Path
-          p = Path("src/ssc.lpi")
-          s = p.read_text(encoding="utf-8")
-          s = s.replace("""      <Item>
-        <PackageName Value="openai_input"/>
-      </Item>
-""", "")
-          s = s.replace("""      <Item>
-        <PackageName Value="openai_core"/>
-      </Item>
-""", "")
-          s = s.replace("""    <SearchPaths>
-      <IncludeFiles Value="$(ProjOutDir)"/>
-""", """    <SearchPaths>
-      <OtherUnitFiles Value="../../CHATGPT/pacote;../../CHATGPT/pacote/AI;../../CHATGPT/pacote/AI Input/AISerial"/>
-      <IncludeFiles Value="$(ProjOutDir)"/>
-""")
-          p.write_text(s, encoding="utf-8")
-          '@ | python -
+          python .github\scripts\prepare_ssc_ci.py
+          if ($LASTEXITCODE -ne 0) { throw 'Failed to prepare SSC CI project' }
 
       - name: Build SSC Windows
         shell: pwsh
