@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  ComCtrls, aiserial, ailistserialdevices, setssc;
+  ComCtrls, aiserial, ailistserialdevices, setssc, funcoes;
 
 const
   APP_TITLE = 'SSC 3.0 - Analisador Serial';
@@ -86,7 +86,7 @@ type
     procedure SendButtonClick(Sender: TObject);
     procedure SendEditKeyPress(Sender: TObject; var Key: Char);
 
-    function DataToHex(const AData: string): string;
+    function FormatHexForDisplay(const AData: string): string;
     function DataToVisibleText(const AData: string): string;
     function FormatData(const AData: string): string;
     function TryParseHex(const AText: string; out AData: string): Boolean;
@@ -744,16 +744,22 @@ begin
   end;
 end;
 
-function Tfrmmain.DataToHex(const AData: string): string;
+function Tfrmmain.FormatHexForDisplay(const AData: string): string;
 var
+  RawHex: string;
   I: Integer;
 begin
+  { Conversão é feita pela biblioteca CHATGPT (funcoes.StrToHex).
+    Aqui apenas inserimos espaços para facilitar a leitura no monitor. }
+  RawHex := StrToHex(AData);
   Result := '';
-  for I := 1 to Length(AData) do
+  I := 1;
+  while I <= Length(RawHex) do
   begin
     if Result <> '' then
       Result := Result + ' ';
-    Result := Result + IntToHex(Ord(AData[I]), 2);
+    Result := Result + Copy(RawHex, I, 2);
+    Inc(I, 2);
   end;
 end;
 
@@ -780,8 +786,8 @@ end;
 function Tfrmmain.FormatData(const AData: string): string;
 begin
   case FDisplayModeCombo.ItemIndex of
-    1: Result := DataToHex(AData);
-    2: Result := DataToVisibleText(AData) + '    | ' + DataToHex(AData);
+    1: Result := FormatHexForDisplay(AData);
+    2: Result := DataToVisibleText(AData) + '    | ' + FormatHexForDisplay(AData);
   else
     Result := DataToVisibleText(AData);
   end;
@@ -790,8 +796,7 @@ end;
 function Tfrmmain.TryParseHex(const AText: string; out AData: string): Boolean;
 var
   Clean: string;
-  I, V: Integer;
-  Pair: string;
+  I: Integer;
 begin
   Result := False;
   AData := '';
@@ -810,16 +815,18 @@ begin
 
   if Odd(Length(Clean)) then Exit;
 
-  I := 1;
-  while I <= Length(Clean) do
-  begin
-    Pair := Copy(Clean, I, 2);
-    if not TryStrToInt('$' + Pair, V) then Exit;
-    AData := AData + Chr(V);
-    Inc(I, 2);
-  end;
+  { Validação local; a conversão em si é reaproveitada da biblioteca CHATGPT. }
+  for I := 1 to Length(Clean) do
+    if not (UpCase(Clean[I]) in ['0'..'9', 'A'..'F']) then
+      Exit;
 
-  Result := True;
+  try
+    AData := HexToStr(Clean);
+    Result := True;
+  except
+    Result := False;
+    AData := '';
+  end;
 end;
 
 function Tfrmmain.ApplyEOL(const AData: string): string;
