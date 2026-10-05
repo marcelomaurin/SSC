@@ -842,7 +842,8 @@ begin
     S := '';
 
   S := S + APrefix + '  ' + FormatData(AData);
-  if not S.EndsWith(LineEnding) then
+  if (Length(S) < Length(LineEnding)) or
+     (Copy(S, Length(S) - Length(LineEnding) + 1, Length(LineEnding)) <> LineEnding) then
     S := S + LineEnding;
 
   AppendLog(S);
