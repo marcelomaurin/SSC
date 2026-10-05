@@ -33,7 +33,7 @@ jobs:
           set -euo pipefail
           git clone --depth 1 https://github.com/marcelomaurin/CHATGPT.git ../CHATGPT
           cd ../CHATGPT
-          python3 installer/common/install_suite.py ci --profile all --lazbuild /usr/bin/lazbuild --dependency-dir "$RUNNER_TEMP/chatgpt-dependencies"
+          python3 installer/common/install_suite.py ci --profile recommended --lazbuild /usr/bin/lazbuild --dependency-dir "$RUNNER_TEMP/chatgpt-dependencies"
 
       - name: Build SSC Linux
         run: |
@@ -75,7 +75,7 @@ jobs:
         run: |
           git clone --depth 1 https://github.com/marcelomaurin/CHATGPT.git ..\CHATGPT
           Set-Location ..\CHATGPT
-          python installer/common/install_suite.py ci --profile all --lazbuild "$env:LAZBUILD" --dependency-dir "$env:RUNNER_TEMP\chatgpt-dependencies"
+          python installer/common/install_suite.py ci --profile recommended --lazbuild "$env:LAZBUILD" --dependency-dir "$env:RUNNER_TEMP\chatgpt-dependencies"
           if ($LASTEXITCODE -ne 0) { throw 'CHATGPT package installation failed' }
 
       - name: Build SSC Windows
