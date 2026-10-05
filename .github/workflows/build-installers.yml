@@ -28,12 +28,30 @@ jobs:
           lazbuild --version
           fpc -iV
 
-      - name: Prepare CHATGPT library
+      - name: Prepare CHATGPT sources for SSC
         run: |
           set -euo pipefail
           git clone --depth 1 https://github.com/marcelomaurin/CHATGPT.git ../CHATGPT
-          cd ../CHATGPT
-          python3 installer/common/install_suite.py ci --profile recommended --lazbuild /usr/bin/lazbuild --dependency-dir "$RUNNER_TEMP/chatgpt-dependencies"
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("src/ssc.lpi")
+          s = p.read_text(encoding="utf-8")
+          s = s.replace('''      <Item>
+        <PackageName Value="openai_input"/>
+      </Item>
+''', '')
+          s = s.replace('''      <Item>
+        <PackageName Value="openai_core"/>
+      </Item>
+''', '')
+          s = s.replace('''    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)"/>
+''', '''    <SearchPaths>
+      <OtherUnitFiles Value="../../CHATGPT/pacote;../../CHATGPT/pacote/AI;../../CHATGPT/pacote/AI Input/AISerial"/>
+      <IncludeFiles Value="$(ProjOutDir)"/>
+''')
+          p.write_text(s, encoding="utf-8")
+          PY
 
       - name: Build SSC Linux
         run: |
@@ -70,13 +88,30 @@ jobs:
             echo ('LAZBUILD=' + $laz.Source) >> $env:GITHUB_ENV
           }
 
-      - name: Prepare CHATGPT library
+      - name: Prepare CHATGPT sources for SSC
         shell: pwsh
         run: |
           git clone --depth 1 https://github.com/marcelomaurin/CHATGPT.git ..\CHATGPT
-          Set-Location ..\CHATGPT
-          python installer/common/install_suite.py ci --profile recommended --lazbuild "$env:LAZBUILD" --dependency-dir "$env:RUNNER_TEMP\chatgpt-dependencies"
-          if ($LASTEXITCODE -ne 0) { throw 'CHATGPT package installation failed' }
+          @'
+          from pathlib import Path
+          p = Path("src/ssc.lpi")
+          s = p.read_text(encoding="utf-8")
+          s = s.replace("""      <Item>
+        <PackageName Value="openai_input"/>
+      </Item>
+""", "")
+          s = s.replace("""      <Item>
+        <PackageName Value="openai_core"/>
+      </Item>
+""", "")
+          s = s.replace("""    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)"/>
+""", """    <SearchPaths>
+      <OtherUnitFiles Value="../../CHATGPT/pacote;../../CHATGPT/pacote/AI;../../CHATGPT/pacote/AI Input/AISerial"/>
+      <IncludeFiles Value="$(ProjOutDir)"/>
+""")
+          p.write_text(s, encoding="utf-8")
+          '@ | python -
 
       - name: Build SSC Windows
         shell: pwsh
